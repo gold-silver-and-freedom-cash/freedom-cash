@@ -9,7 +9,7 @@ cp -r ./docs/_app/ ./docs/app/
 sed -i 's/_app/app/g' docs/freedomCashing.html
 sed -i 's/_app/app/g' docs/freedomEnterprise.html
 sed -i 's/_app/app/g' docs/philosophy.html
-sed -i 's/_app/app/g' docs/freedomGoods.html
+sed -i 's/_app/app/g' docs/freedomChats.html
 sed -i 's/_app/app/g' docs/index.html
 sed -i "s/timestampOfBuild/$(date +%s%N | cut -b1-13)/g" docs/philosophy.html
 echo "copying constants for deno based volatility farming"

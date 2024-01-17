@@ -15,21 +15,33 @@
 	});
 	async function buyFreedomCash() {
 		const amountToBeBoughtInWei = ethers.parseEther(amountToBeBought.toString());
-		const buyPrice = Number(await contract.getBuyPrice(amountToBeBoughtInWei));
-		const cost = amountToBeBought * buyPrice;
+		const buyPrice = await contract.getBuyPrice(amountToBeBoughtInWei);
+		const cost = BigInt(amountToBeBought) * buyPrice;
 		const ethInWallet = BigInt(await provider.getBalance(publicWalletAddressOfVisitor));
-		if (ethInWallet < cost) {
-			alert('you might enter a smaller amount');
-		} else {
-			try {
-				let result = await contract.buyFreedomCash(amountToBeBoughtInWei, buyPrice, {
+		try {
+			const estimatedGas = await contract.buyFreedomCash.estimateGas(
+				amountToBeBoughtInWei,
+				buyPrice,
+				{
 					value: BigInt(cost)
-				});  
-				visitorInformed = false;
-				console.log(result);
-			} catch (error) {
-				alert(error.message);
+				}
+			);
+			const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
+			if (ethInWallet < cost + BigInt(estimatedGasCost)) {
+				alert('you might enter a smaller amount');
+			} else {
+				try {
+					let result = await contract.buyFreedomCash(amountToBeBoughtInWei, buyPrice, {
+						value: BigInt(cost)
+					});
+					visitorInformed = false;
+					console.log(result);
+				} catch (error) {
+					alert('you might enter a smaller amount');
+				}
 			}
+		} catch (error) {
+			alert(error);
 		}
 	}
 </script>
