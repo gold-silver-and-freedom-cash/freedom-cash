@@ -6,10 +6,12 @@ echo "updating links to ensure that the pages can be easily served e.g. via gh p
 sed -i 's/href="\//href=".\//g' docs/index.html 
 sed -i 's/src="\//src=".\//g' docs/index.html
 cp -r ./docs/_app/ ./docs/app/
-sed -i 's/_app/app/g' docs/freedomCashing.html
+sed -i 's/_app/app/g' docs/freedomWallets.html
+sed -i 's/_app/app/g' docs/freedomTreasures.html
+sed -i 's/_app/app/g' docs/freedomExchange.html
 sed -i 's/_app/app/g' docs/freedomEnterprise.html
-sed -i 's/_app/app/g' docs/philosophy.html
 sed -i 's/_app/app/g' docs/freedomChats.html
+sed -i 's/_app/app/g' docs/philosophy.html
 sed -i 's/_app/app/g' docs/index.html
 sed -i "s/timestampOfBuild/$(date +%s%N | cut -b1-13)/g" docs/philosophy.html
 echo "copying constants for deno based volatility farming"

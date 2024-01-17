@@ -11,7 +11,7 @@
 	Will be released on March 2024.
 
 	<div class="center">
-		<img class="moniqueImage" src="https://github.com/monique-baumann/FreedomEnterprise/assets/145258627/1804d7a1-504e-47b2-a058-4207c265f23a" alt="" />
+		<img class="moniqueImage" src="https://github.com/monique-baumann/FreedomEnterprise/assets/145258627/0fe025ad-1aef-47f1-ad51-054411d7a5d0" alt="" />
 	</div>
 
 	<p><br></p>

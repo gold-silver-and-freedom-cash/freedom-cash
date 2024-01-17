@@ -90,12 +90,11 @@
 			claimed: raw[4],
 			timestamp: Number(raw[5])
 		};
-		var date = new Date(chat.timestamp * 1000);
-		var hours = date.getHours();
-		var minutes = '0' + date.getMinutes();
-		var seconds = '0' + date.getSeconds();
-		chat.time = `${hours}-${minutes}-${seconds}`;
-		chats.push(chat);
+		// var date = new Date(chat.timestamp * 1000);
+		// var hours = date.getHours();
+		// var minutes = '0' + date.getMinutes();
+		// var seconds = '0' + date.getSeconds();
+		// chat.time = `${hours}-${minutes}-${seconds}`;
 		chats.push(chat);
 		chatsLoaded = true;
 	}
@@ -124,47 +123,23 @@
 				{#if index % 2 === 0}
 					<div class="container">
 						<p>{chat.text}</p>
-						<span class="time-right">{chat.time}</span>
+						<!-- <span class="time-right">{chat.time}</span> -->
 					</div>
 				{:else}
-					<div class="container darker">
+				<div class="container darker">
+						<!-- <img
+							src="https://github.com/monique-baumann/FreedomEnterprise/assets/145258627/7a58cce2-5e01-4e2a-b004-2623819d396f"
+							alt="Avatar"
+							class="right"
+							style="width:100%;"
+						/> -->
 						<p>{chat.text}</p>
 						<span class="time-right">{chat.time}</span>
 					</div>
 				{/if}
 			{/each}
 
-			<div class="container darker">
-				<img
-					src="https://github.com/monique-baumann/FreedomEnterprise/assets/145258627/7a58cce2-5e01-4e2a-b004-2623819d396f"
-					alt="Avatar"
-					class="right"
-					style="width:100%;"
-				/>
-				<p>Hey! I'm fine. Thanks for asking!</p>
-				<span class="time-left">11:01</span>
-			</div>
-
-			<div class="container">
-				<img
-					src="https://github.com/monique-baumann/FreedomEnterprise/assets/145258627/7a58cce2-5e01-4e2a-b004-2623819d396f"
-					alt="Avatar"
-					style="width:100%;"
-				/>
-				<p>Sweet! So, what do you wanna do today?</p>
-				<span class="time-right">11:02</span>
-			</div>
-
-			<div class="container darker">
-				<img
-					src="https://github.com/monique-baumann/FreedomEnterprise/assets/145258627/7a58cce2-5e01-4e2a-b004-2623819d396f"
-					alt="Avatar"
-					class="right"
-					style="width:100%;"
-				/>
-				<p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
-				<span class="time-left">11:05</span>
-			</div>
+			
 		</div>
 	{:else}
 		<button
@@ -223,7 +198,7 @@
 		display: table;
 	}
 
-	.container img {
+	/* .container img {
 		float: left;
 		max-width: 60px;
 		width: 100%;
@@ -235,15 +210,15 @@
 		float: right;
 		margin-left: 20px;
 		margin-right: 0;
-	}
+	} */
 
 	.time-right {
 		float: right;
 		color: #aaa;
 	}
 
-	.time-left {
+	/* .time-left {
 		float: left;
 		color: #999;
-	}
+	} */
 </style>
