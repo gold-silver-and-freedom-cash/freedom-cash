@@ -48,7 +48,7 @@
 
 {#if visitorInformed}
 	{#if etherAmountAvailable > 0}
-		How much Freedom Cash do you want to buy?
+		How much would you like to buy?
 		<p><br /></p>
 		<input
 			bind:value={amountToBeBought}

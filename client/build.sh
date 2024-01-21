@@ -10,7 +10,7 @@ sed -i 's/_app/app/g' docs/freedomWallets.html
 sed -i 's/_app/app/g' docs/freedomTreasures.html
 sed -i 's/_app/app/g' docs/freedomExchange.html
 sed -i 's/_app/app/g' docs/freedomEnterprise.html
-sed -i 's/_app/app/g' docs/freedomChats.html
+sed -i 's/_app/app/g' docs/freedomInvestments.html
 sed -i 's/_app/app/g' docs/philosophy.html
 sed -i 's/_app/app/g' docs/index.html
 sed -i "s/timestampOfBuild/$(date +%s%N | cut -b1-13)/g" docs/philosophy.html

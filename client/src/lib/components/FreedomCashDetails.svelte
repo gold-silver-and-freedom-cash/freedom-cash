@@ -12,7 +12,7 @@ Funding playgrounds for freedom.
 Freedom Cash is the currency for the
 <a href="https://github.com/monique-baumann/FreedomEnterprise/blob/main/README.md" target="_blank"
 	>Freedom Enterprise</a
->.
+> and many more Freedom Projects.
 <p><br /></p>
 <!-- Freedom Cash supports peer to peer collaboration while preventing pump and dump frauds. <br> -->
 Freedom Cash provides a buy and sell function within the smart contract itself, defining a reasonable

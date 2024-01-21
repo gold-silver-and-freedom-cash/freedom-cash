@@ -3,7 +3,7 @@
 </script>
 
 <div class="text-center">
-	<h2>Freedom Cashing</h2>
+	<h2>Freedom Treasures</h2>
 
 	Geocashing for freedom.
 	<p><br /></p>

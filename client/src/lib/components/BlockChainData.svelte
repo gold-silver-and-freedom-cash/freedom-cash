@@ -15,9 +15,6 @@
 
 	onMount(async () => {
 		loadData();
-		setInterval(() => {
-			loadData();
-		}, 9 * 1000);
 	});
 
 	async function loadData() {

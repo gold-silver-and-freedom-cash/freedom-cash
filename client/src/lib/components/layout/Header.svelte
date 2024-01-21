@@ -9,7 +9,7 @@
 	];
 	const linksRight = [
 		['/freedomEnterprise', 'Enterprise'],
-		['/freedomChats', 'Chats'],
+		['/freedomInvestments', 'Investment'],
 		['/philosophy', 'Philosophy'],
 	];
 </script>
