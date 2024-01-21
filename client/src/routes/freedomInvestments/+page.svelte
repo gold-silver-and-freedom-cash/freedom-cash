@@ -6,7 +6,6 @@
 		baseURLScan,
 		targetChainName,
 		targetChainId,
-		freedomChats,
 		freedomChatsABI
 	} from '../../constants.ts';
 	import InvestmentInfo from '$components/InvestmentInfo.svelte';
