@@ -1,6 +1,7 @@
 <script>
 	import Seo from '$lib/components/Seo.svelte';
 	import { ethers } from 'ethers';
+	import hashJs from 'hash.js';
 	import { onMount } from 'svelte';
 	import {
 		freedomBets,
@@ -10,7 +11,7 @@
 		votingPeriodMinLength
 	} from '../../constants.ts';
 	import FeedbackToVisitor from '../../lib/components/FeedbackToVisitor.svelte';
-	import { replaceContentToShowClickableLinks } from '$lib/helpers.js';
+	import { connectToBlockchain, replaceContentToShowClickableLinks } from '$lib/helpers.js';
 
 	let publicWalletAddressOfVisitor = '';
 	let visitorIsConnectedViaBrowserWallet = false;
@@ -33,64 +34,14 @@
 			visitorHasBrowserWallet = false;
 		} else {
 			visitorHasBrowserWallet = true;
-			await connectToBlockchain();
-			await loadProjects();
-			setInterval(async () => {
-				if (detailsFor == 0) {
-					await loadProjects();
-				}
-			}, 27 * 1000);
+			const connectionData = await connectToBlockchain();
+			provider = connectionData.provider;
+			contract = connectionData.fBContract;
+			publicWalletAddressOfVisitor = connectionData.publicWalletAddressOfVisitor;
+			visitorIsConnectedViaBrowserWallet = true;
+			await loadProjects()
 		}
 	});
-
-	async function connectToBlockchain() {
-		if (visitorHasBrowserWallet) {
-			try {
-				chainId = await window.ethereum.request({
-					method: 'eth_chainId'
-				});
-
-				if (chainId !== targetChainId) {
-					try {
-						await window.ethereum.request({
-							method: 'wallet_switchEthereumChain',
-							params: [{ chainId: targetChainId }]
-						});
-					} catch (error) {
-						await window.ethereum.request({
-							method: 'wallet_addEthereumChain',
-							params: [
-								{
-									chainId: '0x44d',
-									chainName: 'Polygon zkEVM',
-									rpcUrls: ['https://zkevm-rpc.com'],
-									nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-									blockExplorerUrls: ['https://zkevm.polygonscan.com']
-								}
-							]
-						});
-					}
-				} else {
-					buttonText = 'Invest Into Freedom Cash';
-				}
-				accounts = await window.ethereum.request({
-					method: 'eth_requestAccounts'
-				});
-
-				provider = new ethers.BrowserProvider(window.ethereum);
-				const signer = await provider.getSigner();
-				contract = new ethers.Contract(freedomBets, freedomBetsABI, signer);
-
-				publicWalletAddressOfVisitor = accounts[0];
-				visitorIsConnectedViaBrowserWallet = true;
-			} catch (error) {
-				alert(error.message);
-			}
-
-			visitorIsConnectedViaBrowserWallet = true;
-		}
-		// window.ethereum.on('accountsChanged', await loadChats());
-	}
 
 	async function addProject() {
 		const counter = await contract.projectCounter();
@@ -102,8 +53,8 @@
 		newProject = '';
 	}
 	async function addAsset(projectID) {
-		const hash = await contract.getHash(newAsset);
-		// const hash = "0x" + hashJs.sha256().update(text).digest('hex')
+		// const hash = "0x" + hashJs.sha256().update(newAsset).digest('hex')
+		const hash = await contract.getHash(newAsset)
 		console.log(`adding to ${projectID} asset ${newAsset} ${hash} ${votingPeriodMinLength}`);
 		await contract.addAsset(projectID, newAsset, hash, votingPeriodMinLength);
 	}
@@ -122,11 +73,9 @@
 	}
 </script>
 
-<Seo title="Freedom Projects" />
-
 <div class="text-center">
-	<h2>Freedom Projects</h2>
-	Freedom Bets incentivize voters to vote and protect against stupidity, corruption and fraud.
+	<p><br></p>
+	Freedom Projects incentivize voters to vote and protect against stupidity, corruption and fraud.
 	<p><br /></p>
 	Any project can become a community guarded project via Freedom Bets.
 	<!-- <p><br></p>
@@ -168,7 +117,7 @@
 								/>
 								<p><br /></p>
 								{#if newAsset}
-									<button on:click={() => addAsset(index + 1)}>Add Asset</button>
+									<button class="inside" on:click={() => addAsset(index + 1)}>Add Asset</button>
 								{/if}
 							</td>
 						</tr>
@@ -186,10 +135,11 @@
 			/>
 			<p><br /></p>
 			{#if newProject}
-				<button on:click={() => addProject()}>Add Project</button>
+				<button class="inside" on:click={() => addProject()}>Add Project</button>
 			{/if}
 		{:else}
 			<FeedbackToVisitor
+				smartContractAddress={freedomBets}
 				{message}
 				on:clickedOK={() => {
 					visitorInformed = true;

@@ -1,5 +1,8 @@
 import { ethers, Logger } from "../deps.ts"
 
+// export const freedomBets = "0x8C45bA4c0bAe3898C01DEae81a47Ef469d59b15D" // testnet
+// export const FC = "0x1E7A208810366D0562c7Ba93F883daEedBf31410" // testnet
+export const freedomBets = "0x6e30d379C92Cc452a44213B2a9FCed71E2D32149" 
 export const FC = "0xa1e7bB978a28A30B34995c57d5ba0B778E90033B"
 export const ROUTER = "0xE592427A0AEce92De3Edee1F18E0157C05861564"
 export const CULT = "0xf0f9D895aCa5c8678f706FB8216fa22957685A13"

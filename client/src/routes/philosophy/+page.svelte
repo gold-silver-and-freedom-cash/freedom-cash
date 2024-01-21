@@ -3,7 +3,7 @@
 	import Seo from '$lib/components/Seo.svelte';
 </script>
 
-<Seo title="cultproposals" />
+<Seo title="Freedom Philosophy" />
 
 <div class="text-center content">
 	<h2>Philosophy</h2>

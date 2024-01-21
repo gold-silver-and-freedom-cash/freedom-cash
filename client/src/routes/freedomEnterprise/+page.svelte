@@ -1,6 +1,5 @@
 <script>
 	import Seo from '$lib/components/Seo.svelte';
-	import { baseURLScan, smartContractAddress } from '../../constants.ts';
 </script>
 
 <Seo title="Freedom Enterprise" />

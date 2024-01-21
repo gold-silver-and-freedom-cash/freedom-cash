@@ -10,14 +10,9 @@
 
 	let assets = [];
 	let filteredassets = [];
-	let amountOfCoinsInVisitorsWallet;
-	// let amountOfCoinsInSmartContractItself;
 	let readyForDisplay = false;
-	let buyPrice;
-	let sellPrice;
-	let firstTimeLoad = true;
 	let typingActive = false;
-	let amountOfETHInSmartContract;
+
 
 	onMount(async () => {
 		loadData();
@@ -28,7 +23,7 @@
 		const projectCounter = await contract.projectCounter();
 		assets = [];
 		readyForDisplay = false;
-		if (projectID == 0){
+		if (projectID === 0){
 			while (countProjects < projectCounter) {
 				countProjects++;
 				await getAssetsForProjectID(countProjects)
@@ -46,11 +41,11 @@
 			while (counter < projectHashes.length) {
 				let assetRaw = await contract.getAsset(projectHashes[counter]);
 				const asset = {
-					id: await contract.hashToAssetID(projectHashes[counter]),
+					id: Number(await contract.hashToAssetID(projectHashes[counter])),
 					text: assetRaw.text,
-					upVoteScore: ethers.formatEther(assetRaw.upVoteScore),
-					downVoteScore: ethers.formatEther(assetRaw.downVoteScore),
-					reconciliationFrom: assetRaw.reconciliationFrom,
+					upVoteScore: Number(ethers.formatEther(assetRaw.upVoteScore)),
+					downVoteScore: Number(ethers.formatEther(assetRaw.downVoteScore)),
+					reconciliationFrom: Number(assetRaw.reconciliationFrom),
 					reconciled: assetRaw.reconciled
 				};
 				assets.push(asset);
@@ -71,7 +66,6 @@
 						currentFilterResult.push(asset);
 					}
 				}
-
 				filteredassets = [...currentFilterResult];
 				typingActive = false;
 			}, 1000 * 1);
@@ -113,4 +107,8 @@
 </div>
 
 <style>
+	.assets {
+		max-height: 630px;
+		overflow-y: scroll;
+	}
 </style>

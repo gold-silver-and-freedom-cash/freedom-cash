@@ -75,7 +75,7 @@
 		<p><br /></p>
 	{/if}
 {:else}
-	<FeedbackToVisitor
+	<FeedbackToVisitor {smartContractAddress}
 		on:clickedOK={() => {
 			visitorInformed = true;
 		}}

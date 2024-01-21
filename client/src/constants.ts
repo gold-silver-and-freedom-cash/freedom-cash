@@ -1,15 +1,17 @@
 
-export const smartContractAddress = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
-// export const smartContractAddress = '0x1E7A208810366D0562c7Ba93F883daEedBf31410';
+// export const freedomBets = '0x6e30d379C92Cc452a44213B2a9FCed71E2D32149'; 
+export const freedomBets = '0xEb873B79a4eEE8add3dB8f4099799983620d9540'; // testnet
+export const smartContractAddress = '0x1E7A208810366D0562c7Ba93F883daEedBf31410'; // testnet
+export const freedomCash = '0x1E7A208810366D0562c7Ba93F883daEedBf31410'; // testnet
+// export const freedomCash = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
+// export const smartContractAddress = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
 // export const freedomChats = '0x97f9723BCb41C60bB4f6e01bf59B6Ce8B2364466';
-export const freedomBets = '0x8C45bA4c0bAe3898C01DEae81a47Ef469d59b15D';
-export const freedomCash = '0x1E7A208810366D0562c7Ba93F883daEedBf31410';
 export const targetChainName = 'Polygon ZKEVM';
 export const votingPeriodMinLength = 180
 
 
-export const targetChainId = '0x44d'; // == 1101 in decimal = Polygon ZKEVM
-// export const targetChainId = '0x3430'; // == 13360 in decimal = Builbear
+// export const targetChainId = '0x44d'; // == 1101 in decimal = Polygon ZKEVM
+export const targetChainId = '0x3430'; // == 13360 in decimal = Builbear
 export const baseURLScan = "https://zkevm.polygonscan.com/"
 
 export const freedomBetsABI = [

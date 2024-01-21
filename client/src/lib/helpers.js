@@ -1,3 +1,5 @@
+import { ethers } from 'ethers';
+import { freedomBets, freedomBetsABI, freedomCashABI, smartContractAddress, targetChainId } from '../constants';
 
 export const isEthereumWalletAddress = (address) => {
     if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
@@ -59,7 +61,7 @@ export const getFirstLinkInText = (text) => {
 
 
 export const replaceContentToShowClickableLinks = (content) => {
-    
+
     if (content !== undefined && content.length > 10 && content.indexOf('http') === 0 && content.indexOf("http://localhost:8047") === -1 && content.indexOf("https://cultdonations.org") === -1) {
 
         var exp_match =
@@ -152,3 +154,62 @@ export const addOneDay = (input) => {
 
     return result
 }
+
+export const connectToBlockchain = async () => {
+    let connectionData ={
+        provider: {},
+        contract: {},
+        publicWalletAddressOfVisitor: ""
+    }
+    try {
+        const chainId = await window.ethereum.request({
+            method: 'eth_chainId'
+        });
+
+        if (chainId !== targetChainId) {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: targetChainId }]
+                });
+            } catch (error) {
+                await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [
+                        {
+                            chainId: '0x44d',
+                            chainName: 'Polygon zkEVM',
+                            rpcUrls: ['https://zkevm-rpc.com'],
+                            nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+                            blockExplorerUrls: ['https://zkevm.polygonscan.com']
+                        }
+                    ]
+                });
+            }
+        }
+        const accounts = await window.ethereum.request({
+            method: 'eth_requestAccounts'
+        });
+
+        connectionData.provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await connectionData.provider.getSigner();
+        connectionData.contract = new ethers.Contract(smartContractAddress, freedomCashABI, signer);
+        connectionData.fBContract = new ethers.Contract(freedomBets, freedomBetsABI, signer);
+        connectionData.publicWalletAddressOfVisitor = accounts[0];
+        window.ethereum.on('chainChanged', handleChainChanged);
+        connectionData.visitorIsConnectedViaBrowserWallet = true;
+    } catch (error) {
+        alert(error.message);
+    }
+    window.ethereum.on('accountsChanged', function (accounts) {
+        alert(`the account has been changed via Metamask. So I reload.`);
+        window.location.reload();
+    });
+    
+    return connectionData
+}
+function handleChainChanged(chainId) {
+    // await connectToBlockchain()
+    alert(`the chain has been changed via Metamask. So I reload.`);
+    window.location.reload();
+}    
