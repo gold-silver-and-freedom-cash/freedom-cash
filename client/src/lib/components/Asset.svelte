@@ -8,73 +8,44 @@
 	let visitorInformed = true;
 	let amount;
 
-	async function appreciate(projectID) {
+	async function vote(assetID, up) {
 		const amountToBeBoughtInWei = ethers.parseEther(amount.toString());
 		const signer = await provider.getSigner();
 		const fCContract = new ethers.Contract(freedomCash, freedomCashABI, signer);
 		const buyPrice = await fCContract.getBuyPrice(amountToBeBoughtInWei);
 		const cost = BigInt(amount) * buyPrice;
 		const ethInWallet = BigInt(await provider.getBalance(publicWalletAddressOfVisitor));
-		// try {
-		// 	const estimatedGas = await contract.appreciateAsset.estimateGas(
-		// 		assetID,
-		// 		amountToBeBoughtInWei,
-		// 		buyPrice,
-		// 		{
-		// 			value: BigInt(cost)
-		// 		}
-		// 	);
-		// 	const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
-		// 	if (ethInWallet < cost + BigInt(estimatedGasCost)) {
-		// 		alert('you might enter a smaller amount');
-		// 	} else {
 		try {
-			let result = await contract.appreciateAsset(projectID, amountToBeBoughtInWei, buyPrice, {
-				value: BigInt(cost)
-			});
-			visitorInformed = false;
-			console.log(result);
+			const estimatedGas = await contract.appreciateAsset.estimateGas( 
+				assetID,
+				amountToBeBoughtInWei,
+				buyPrice,
+				{
+					value: BigInt(cost)
+				}
+			);
+			const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
+			if (ethInWallet < cost + BigInt(estimatedGasCost)) {
+				alert('you might enter a smaller amount');
+			} else {
+				try {
+					if (up) {
+						await contract.appreciateAsset(assetID, amountToBeBoughtInWei, buyPrice, {
+							value: BigInt(cost)
+						});
+					} else {
+						await contract.depreciateAsset(assetID, amountToBeBoughtInWei, buyPrice, {
+							value: BigInt(cost)
+						});
+					}
+					visitorInformed = false;
+				} catch (error) {
+					alert('you might enter a smaller amount');
+				}
+			}
 		} catch (error) {
-			alert('you might enter a smaller amount');
+			alert(error);
 		}
-		// 	}
-		// } catch (error) {
-		// 	alert(error);
-		// }
-	}
-	async function depreciate(projectID) {
-		const amountToBeBoughtInWei = ethers.parseEther(amount.toString());
-		const signer = await provider.getSigner();
-		const fCContract = new ethers.Contract(freedomCash, freedomCashABI, signer);
-		const buyPrice = await fCContract.getBuyPrice(amountToBeBoughtInWei);
-		const cost = BigInt(amount) * buyPrice;
-		const ethInWallet = BigInt(await provider.getBalance(publicWalletAddressOfVisitor));
-		// try {
-		// 	const estimatedGas = await contract.depreciateAsset.estimateGas(
-		// 		assetID,
-		// 		amountToBeBoughtInWei,
-		// 		buyPrice,
-		// 		{
-		// 			value: BigInt(cost)
-		// 		}
-		// 	);
-		// 	const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
-		// 	if (ethInWallet < cost + BigInt(estimatedGasCost)) {
-		// 		alert('you might enter a smaller amount');
-		// 	} else {
-		try {
-			let result = await contract.depreciateAsset(projectID, amountToBeBoughtInWei, buyPrice, {
-				value: BigInt(cost)
-			});
-			visitorInformed = false;
-			console.log(result);
-		} catch (error) {
-			alert('you might enter a smaller amount');
-		}
-		// 	}
-		// } catch (error) {
-		// 	alert(error);
-		// }
 	}
 </script>
 
@@ -97,12 +68,12 @@
 		/>
 		<p><br /></p>
 		{#if amount > 0}
-			<button class="inside" on:click={() => appreciate(asset.id)}>Appreciate</button>
+			<button class="inside" on:click={() => vote(asset.id, true)}>Appreciate</button>
 			<p><br /></p>
-			<button class="inside" on:click={() => depreciate(asset.id)}>Depreciate</button>
-			<p><br></p>
+			<button class="inside" on:click={() => vote(asset.id, false)}>Depreciate</button>
+			<p><br /></p>
 		{/if}
-		{#if asset.reconciliationFrom < (new Date().getTime() / 1000)}
+		{#if asset.reconciliationFrom < new Date().getTime() / 1000}
 			<button class="inside" on:click={() => contract.reconcile(asset.id)}>Reconcile</button>
 		{/if}
 	{/if}
