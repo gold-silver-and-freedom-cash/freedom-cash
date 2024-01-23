@@ -6,7 +6,7 @@
 		targetChainName,
 		votingPeriodMinLength
 	} from '../../constants.ts';
-	import { connectToBlockchain, replaceContentToShowClickableLinks } from '$lib/helpers.js';
+	import { connectToBlockchain } from '$lib/helpers.js';
 	import Assets from './Assets.svelte';
 
 	let publicWalletAddressOfVisitor = '';
@@ -37,9 +37,9 @@
 
 	async function addTreasure(projectID) {
 		// const hash = "0x" + hashJs.sha256().update(newAsset).digest('hex')
-		const hash = await contract.getHash(newTreasure);
-		console.log(`adding to ${projectID} asset ${newTreasure} ${hash} ${votingPeriodMinLength}`);
-		await contract.addAsset(projectID, newTreasure, hash, votingPeriodMinLength);
+		const assetID = (await contract.assetCounter()) + BigInt(1)
+		console.log(`adding to ${projectID} asset ${newTreasure} ${assetID} ${votingPeriodMinLength}`);
+		await contract.addAsset(projectID, newTreasure, assetID, votingPeriodMinLength);
 	}
 
 </script>
@@ -50,6 +50,14 @@
 			Geocachers support Freedom Cash.
 			<p><br /></p>
 			Once you have created and printed a wallet, you can hide it at any beautiful place.
+			<p><br /></p>
+			After that you can share a link to a photo or video of that place.
+
+			I was here and hided ... 
+			
+			<p><br /><br /><br /></p>
+			<Assets {contract} {publicWalletAddressOfVisitor} {provider} projectID={projectIDGeoCaching}
+			></Assets>
 			<p><br /></p>
 			{#if visitorInformed}
 				<input
@@ -73,10 +81,6 @@
 		}}
 	></FeedbackToVisitor> -->
 			{/if}
-			<p><br /><br /><br /></p>
-			<Assets {contract} {publicWalletAddressOfVisitor} {provider} projectID={projectIDGeoCaching}
-			></Assets>
-
 			<p><br /><br /></p>
 		</div>
 	{/if}

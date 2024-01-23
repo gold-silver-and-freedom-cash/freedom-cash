@@ -35,12 +35,12 @@
 		readyForDisplay = true;
 	}
 	async function getAssetsForProjectID(projectID) {
-		const projectHashes = await contract.getProjectHashes(projectID);
+		const projectAssets = await contract.getProjectAssets(projectID);
 		let counter = 0;
-		while (counter < projectHashes.length) {
-			let assetRaw = await contract.getAsset(projectHashes[counter]);
+		while (counter < projectAssets.length) {
+			let assetRaw = await contract.assets(projectAssets[counter]);
 			const asset = {
-				id: Number(await contract.hashToAssetID(projectHashes[counter])),
+				id: Number(await contract.projectAssets[counter]),
 				text: assetRaw.text,
 				upVoteScore: Number(ethers.formatEther(assetRaw.upVoteScore)),
 				downVoteScore: Number(ethers.formatEther(assetRaw.downVoteScore)),
@@ -78,7 +78,7 @@
 		bind:value={searchTerm}
 		class="myInputField"
 		type="text"
-		placeholder="... filter assets ..."
+		placeholder="... filter ..."
 		on:keydown={onKeyDown}
 		autofocus
 	/>

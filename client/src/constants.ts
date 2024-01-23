@@ -1,7 +1,9 @@
 
 // export const freedomBets = '0x6e30d379C92Cc452a44213B2a9FCed71E2D32149'; 
-export const freedomBets = '0xEb873B79a4eEE8add3dB8f4099799983620d9540'; // testnet
+export const freedomBets = '0x250a1a84e4601DB5997a940d24eD3Cc05730675e'; // testnet
 export const freedomCash = '0x1E7A208810366D0562c7Ba93F883daEedBf31410'; // testnet
+export const earthCoin = '0x39C421D55fbd788A7a546d2C9d666F4CCD061aB3'; // testnet
+// export const earthCoin = '0x39C421D55fbd788A7a546d2C9d666F4CCD061aB3'; 
 // export const freedomCash = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
 // export const smartContractAddress = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
 // export const freedomChats = '0x97f9723BCb41C60bB4f6e01bf59B6Ce8B2364466';
@@ -14,15 +16,381 @@ export const votingPeriodMinLength = 180
 export const targetChainId = '0x3430'; // == 13360 in decimal = Builbear
 export const baseURLScan = "https://zkevm.polygonscan.com/"
 
-export const freedomBetsABI = [
+export const earthCoinABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
 	{
 		"inputs": [],
-		"name": "ActionSeemsUnintended",
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "BuyPriceMightHaveRisen",
 		"type": "error"
 	},
 	{
 		"inputs": [],
-		"name": "HashAlreadyRegistered",
+		"name": "SellPriceMightHaveDropped",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "TransferOfETHFailed",
+		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "Approval",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "subtractedValue",
+				"type": "uint256"
+			}
+		],
+		"name": "decreaseAllowance",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "donationReceiver",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "fCAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "fCBuyPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "donate",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "addedValue",
+				"type": "uint256"
+			}
+		],
+		"name": "increaseAllowance",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "sellPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "sell",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "Transfer",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			}
+		],
+		"name": "allowance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountToBeBought",
+				"type": "uint256"
+			}
+		],
+		"name": "getBuyPrice",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getSellPrice",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+
+export const freedomBetsABI = [
+	{
+		"inputs": [],
+		"name": "AssetIDAlreadyRegisteredPleaseRetry",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "Nonsense",
 		"type": "error"
 	},
 	{
@@ -47,7 +415,7 @@ export const freedomBetsABI = [
 	},
 	{
 		"inputs": [],
-		"name": "YouCanOnlyAddAssetsToYourOwnProjects",
+		"name": "YouCanOnlyAddAssetsToYourOwnProjectIDs",
 		"type": "error"
 	},
 	{
@@ -63,9 +431,9 @@ export const freedomBetsABI = [
 				"type": "string"
 			},
 			{
-				"internalType": "bytes32",
-				"name": "hash",
-				"type": "bytes32"
+				"internalType": "uint256",
+				"name": "assetID",
+				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
@@ -127,6 +495,25 @@ export const freedomBetsABI = [
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "assetCreators",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -204,52 +591,6 @@ export const freedomBetsABI = [
 	{
 		"inputs": [
 			{
-				"internalType": "bytes32",
-				"name": "hash",
-				"type": "bytes32"
-			}
-		],
-		"name": "getAsset",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "string",
-						"name": "text",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "upVoteScore",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "downVoteScore",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "reconciliationFrom",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "reconciled",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct FreedomBets.IAsset",
-				"name": "",
-				"type": "tuple"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "address",
 				"name": "receiver",
 				"type": "address"
@@ -264,25 +605,6 @@ export const freedomBetsABI = [
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "text",
-				"type": "string"
-			}
-		],
-		"name": "getHash",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "hash",
-				"type": "bytes32"
-			}
-		],
-		"stateMutability": "pure",
 		"type": "function"
 	},
 	{
@@ -317,12 +639,12 @@ export const freedomBetsABI = [
 				"type": "uint256"
 			}
 		],
-		"name": "getProjectHashes",
+		"name": "getProjectAssets",
 		"outputs": [
 			{
-				"internalType": "bytes32[]",
+				"internalType": "uint256[]",
 				"name": "",
-				"type": "bytes32[]"
+				"type": "uint256[]"
 			}
 		],
 		"stateMutability": "view",
@@ -353,25 +675,6 @@ export const freedomBetsABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "hashToAssetID",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "nativeFreedomCash",
 		"outputs": [
@@ -379,19 +682,6 @@ export const freedomBetsABI = [
 				"internalType": "address",
 				"name": "",
 				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "projectCounter",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -410,12 +700,25 @@ export const freedomBetsABI = [
 				"type": "uint256"
 			}
 		],
-		"name": "projectHashes",
+		"name": "projectAssets",
 		"outputs": [
 			{
-				"internalType": "bytes32",
+				"internalType": "uint256",
 				"name": "",
-				"type": "bytes32"
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "projectCounter",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",

@@ -49,9 +49,9 @@
 	}
 	async function addAsset(projectID) {
 		// const hash = "0x" + hashJs.sha256().update(newAsset).digest('hex')
-		const hash = await contract.getHash(newAsset)
-		console.log(`adding to ${projectID} asset ${newAsset} ${hash} ${votingPeriodMinLength}`);
-		await contract.addAsset(projectID, newAsset, hash, votingPeriodMinLength);
+		const assetID = (await contract.assetCounter()) + BigInt(1)
+		console.log(`adding to ${projectID} asset ${newAsset} ${assetID} ${votingPeriodMinLength}`);
+		await contract.addAsset(projectID, newAsset, assetID, votingPeriodMinLength);
 	}
 	async function loadProjects() {
 		if (visitorInformed) {

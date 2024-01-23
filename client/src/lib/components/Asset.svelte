@@ -1,11 +1,12 @@
 <script>
 	import { ethers } from 'ethers';
-	import { freedomCash, freedomCashABI } from '../../constants';
+	import { earthCoin, earthCoinABI, freedomCash, freedomCashABI } from '../../constants';
 	import { replaceContentToShowClickableLinks } from '$lib/helpers';
 	export let asset;
 	export let contract;
 	export let provider;
 	export let publicWalletAddressOfVisitor;
+	let donationAmount;
 	let visitorInformed = true;
 	let amount;
 
@@ -48,6 +49,34 @@
 			alert(error);
 		}
 	}
+	async function donate(assetID) {
+		const signer = await provider.getSigner();
+		const eCContract = new ethers.Contract(earthCoin, earthCoinABI, signer);
+		const amountToBeDonatedInWei = ethers.parseEther(donationAmount.toString());
+		const buyPrice = await eCContract.getBuyPrice(amountToBeDonatedInWei);
+		const cost = BigInt(donationAmount) * buyPrice;
+		const ethInWallet = BigInt(await provider.getBalance(publicWalletAddressOfVisitor));
+		const donationReceiver = (await contract.assets(assetID));
+		alert(donationReceiver)
+		try {
+			const estimatedGas = await eCContract.donate.estimateGas(
+				donationReceiver,
+				amountToBeDonatedInWei,
+				buyPrice,
+				{
+					value: BigInt(cost)
+				}
+			);
+			const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
+			if (ethInWallet < cost + BigInt(estimatedGasCost)) {
+				alert('you might enter a smaller amount');
+			} else {
+				await eCContract.donate(donationReceiver, amountToBeDonatedInWei, buyPrice);
+			}
+		} catch (error) {
+			alert(error.message);
+		}
+	}
 </script>
 
 <div class="card {asset.reconciled ? 'reconciled' : 'open'}">
@@ -56,7 +85,22 @@
 	<span class="score-up">Ups: {asset.upVoteScore} </span> vs.
 	<span class="score-down">Downs: {asset.downVoteScore} </span>
 
-	{#if !asset.reconciled}
+	{#if asset.reconciled}
+		<p><br /></p>
+		<input
+			bind:value={donationAmount}
+			class="myInputField"
+			type="number"
+			placeholder="... enter donation amount ..."
+			min="1"
+			max="369"
+			step="1"
+		/>
+		<p><br /></p>
+		{#if donationAmount > 0}
+			<button class="inside" on:click={() => donate(asset.id)}>Donate</button>
+		{/if}
+	{:else}
 		<p><br /></p>
 		<input
 			bind:value={amount}

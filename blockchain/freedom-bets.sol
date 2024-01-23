@@ -12,19 +12,18 @@ import "https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-contracts/v4
 
 contract FreedomBets {
 
-  address public nativeFreedomCash = 0xa1e7bB978a28A30B34995c57d5ba0B778E90033B; 
-
+  address public nativeFreedomCash = 0x1E7A208810366D0562c7Ba93F883daEedBf31410; 
   uint256 public assetCounter;
   uint256 public voteCounter;
   uint256 public projectCounter;
 
-  mapping(uint256 => bytes32[]) public projectHashes;
+  mapping(uint256 => uint256[]) public projectAssets;
   mapping(uint256 => string) public projects;
   mapping(uint256 => address) public projectOwners;
+  mapping(uint256 => address) public assetCreators;
   mapping(uint256 => IAsset) public assets;
   mapping(uint256 => IVote) public votes;
   mapping(uint256 => uint256) public voteToAsset;
-  mapping(bytes32 => uint256) public hashToAssetID;
 
   struct IAsset{
     string text;
@@ -43,7 +42,7 @@ contract FreedomBets {
 
   error Patience();
   error Nonsense();
-  error HashAlreadyRegistered();
+  error AssetIDAlreadyRegisteredPleaseRetry();
   error NothingToClaim();
   error PleaseCheckYourHashingFunction();
   error YouCanOnlyAddAssetsToYourOwnProjectIDs();
@@ -58,16 +57,14 @@ contract FreedomBets {
       revert PleaseProvideAReasonableProjectID();
     }
   }
-  function addAsset(uint256 projectID, string memory text, bytes32 hash, uint256 votingPeriodMinLength) public {
+  function addAsset(uint256 projectID, string memory text, uint256 assetID, uint256 votingPeriodMinLength) public {
     if (projectOwners[projectID] == msg.sender) {
-      bytes32 controlHash = getHash(text);
-      if (controlHash != hash) { revert PleaseCheckYourHashingFunction(); }
-      if (hashToAssetID[hash] != 0) { revert HashAlreadyRegistered(); }
+      if (assetID != (assetCounter + 1)) { revert AssetIDAlreadyRegisteredPleaseRetry(); }
       assetCounter++;
       IAsset memory asset = IAsset(text, 0, 0, block.timestamp + votingPeriodMinLength, false);
       assets[assetCounter] = asset;
-      hashToAssetID[hash] = assetCounter;
-      projectHashes[projectID].push(hash);    
+      assetCreators[assetCounter] = msg.sender;
+      projectAssets[projectID].push(assetCounter);    
     } else {
       revert YouCanOnlyAddAssetsToYourOwnProjectIDs();
     }
@@ -148,15 +145,9 @@ contract FreedomBets {
       } 
     }
   }
-  function getAsset(bytes32 hash) public view returns(IAsset memory) {
-    return assets[hashToAssetID[hash]];
+  function getProjectAssets(uint256 projectID) public view returns (uint256[] memory) {
+    return projectAssets[projectID];
   }
-  function getProjectHashes(uint256 projectID) public view returns (bytes32[] memory) {
-    return projectHashes[projectID];
-  }
-  function getHash(string memory text) public pure returns(bytes32 hash) {
-    hash = sha256(abi.encode(text));
-  }  
   function distributeRewards(uint256 assetID, bool toUpvoters, uint256 sumOfLosingVotes, uint256 numberOfWinningVotes) internal {
     uint256 rewardPerWinner = Math.mulDiv(sumOfLosingVotes, 91, 100) / numberOfWinningVotes;      
     IERC20(nativeFreedomCash).transfer(nativeFreedomCash, Math.mulDiv(sumOfLosingVotes, 9, 100));
