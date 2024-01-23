@@ -5,7 +5,7 @@
 	export let contract;
 	export let publicWalletAddressOfVisitor;
 	export let provider;
-	export let projectID
+	export let projectID;
 	let searchTerm = '';
 
 	let assets = [];
@@ -13,23 +13,22 @@
 	let readyForDisplay = false;
 	let typingActive = false;
 
-
 	onMount(async () => {
 		loadData();
 	});
 
 	async function loadData() {
-		let countProjects = 0;
-		const projectCounter = await contract.projectCounter();
-		assets = [];
-		readyForDisplay = false;
-		if (projectID === 0){
+		if (projectID === 0) {
+			let countProjects = 0;
+			const projectCounter = await contract.projectCounter();
+			assets = [];
+			readyForDisplay = false;
 			while (countProjects < projectCounter) {
 				countProjects++;
-				await getAssetsForProjectID(countProjects)
+				await getAssetsForProjectID(countProjects);
 			}
 		} else {
-			await getAssetsForProjectID(projectID)
+			await getAssetsForProjectID(projectID);
 		}
 
 		filteredassets = [...assets];
@@ -37,20 +36,20 @@
 	}
 	async function getAssetsForProjectID(projectID) {
 		const projectHashes = await contract.getProjectHashes(projectID);
-			let counter = 0;
-			while (counter < projectHashes.length) {
-				let assetRaw = await contract.getAsset(projectHashes[counter]);
-				const asset = {
-					id: Number(await contract.hashToAssetID(projectHashes[counter])),
-					text: assetRaw.text,
-					upVoteScore: Number(ethers.formatEther(assetRaw.upVoteScore)),
-					downVoteScore: Number(ethers.formatEther(assetRaw.downVoteScore)),
-					reconciliationFrom: Number(assetRaw.reconciliationFrom),
-					reconciled: assetRaw.reconciled
-				};
-				assets.push(asset);
-				counter++;
-			}
+		let counter = 0;
+		while (counter < projectHashes.length) {
+			let assetRaw = await contract.getAsset(projectHashes[counter]);
+			const asset = {
+				id: Number(await contract.hashToAssetID(projectHashes[counter])),
+				text: assetRaw.text,
+				upVoteScore: Number(ethers.formatEther(assetRaw.upVoteScore)),
+				downVoteScore: Number(ethers.formatEther(assetRaw.downVoteScore)),
+				reconciliationFrom: Number(assetRaw.reconciliationFrom),
+				reconciled: assetRaw.reconciled
+			};
+			assets.push(asset);
+			counter++;
+		}
 	}
 
 	const onKeyDown = () => {
@@ -71,18 +70,6 @@
 			}, 1000 * 1);
 		}
 	};
-
-	function shuffle(array) {
-		let currentIndex = array.length,
-			randomIndex;
-		while (currentIndex != 0) {
-			randomIndex = Math.floor(Math.random() * currentIndex);
-			currentIndex--;
-			[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-		}
-
-		return array;
-	}
 </script>
 
 <div class="assets">

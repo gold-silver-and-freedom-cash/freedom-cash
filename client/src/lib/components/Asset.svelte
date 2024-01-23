@@ -1,6 +1,7 @@
 <script>
 	import { ethers } from 'ethers';
 	import { freedomCash, freedomCashABI } from '../../constants';
+	import { replaceContentToShowClickableLinks } from '$lib/helpers';
 	export let asset;
 	export let contract;
 	export let provider;
@@ -16,7 +17,7 @@
 		const cost = BigInt(amount) * buyPrice;
 		const ethInWallet = BigInt(await provider.getBalance(publicWalletAddressOfVisitor));
 		try {
-			const estimatedGas = await contract.appreciateAsset.estimateGas( 
+			const estimatedGas = await contract.appreciateAsset.estimateGas(
 				assetID,
 				amountToBeBoughtInWei,
 				buyPrice,
@@ -50,7 +51,7 @@
 </script>
 
 <div class="card {asset.reconciled ? 'reconciled' : 'open'}">
-	{asset.text}
+	{@html replaceContentToShowClickableLinks(asset.text)}
 	<p><br /></p>
 	<span class="score-up">Ups: {asset.upVoteScore} </span> vs.
 	<span class="score-down">Downs: {asset.downVoteScore} </span>

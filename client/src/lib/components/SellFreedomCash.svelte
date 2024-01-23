@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import FeedbackToVisitor from './FeedbackToVisitor.svelte';
 	import { ethers } from 'ethers';
-	import { smartContractAddress } from '../../constants';
+	import { freedomCash } from '../../constants';
 	export let contract;
 
 	let amount = 1;
@@ -42,7 +42,7 @@
 			<button class="inside" on:click={() => sellFreedomCash()}>Sell Freedom Cash</button>
 		{/if}
 	{:else}
-		<FeedbackToVisitor {smartContractAddress}
+		<FeedbackToVisitor smartContractAddress={freedomCash}
 			on:clickedOK={() => {
 				visitorInformed = true;
 			}}

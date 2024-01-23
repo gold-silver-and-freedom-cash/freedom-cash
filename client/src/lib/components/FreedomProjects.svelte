@@ -1,12 +1,8 @@
 <script>
 	import Seo from '$lib/components/Seo.svelte';
-	import { ethers } from 'ethers';
-	import hashJs from 'hash.js';
 	import { onMount } from 'svelte';
 	import {
 		freedomBets,
-		freedomBetsABI,
-		targetChainId,
 		targetChainName,
 		votingPeriodMinLength
 	} from '../../constants.ts';
@@ -16,9 +12,7 @@
 	let publicWalletAddressOfVisitor = '';
 	let visitorIsConnectedViaBrowserWallet = false;
 	let visitorHasBrowserWallet = false;
-	let chainId = '';
 	let contract;
-	let accounts;
 	let newProject = '';
 	let newAsset = '';
 	let message = '';
@@ -48,7 +42,8 @@
 		const projectID = counter + BigInt(1);
 		console.log(`adding project ${projectID} ${newProject}`);
 		await contract.addProject(projectID, newProject);
-		message = `Your project ${newProject} will be added with projectID ${projectID}. `;
+		message = `Your project ${newProject} will be added with projectID ${projectID}.`;
+		alert(replaceContentToShowClickableLinks(message))
 		visitorInformed = false;
 		newProject = '';
 	}

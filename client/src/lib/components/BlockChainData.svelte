@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { ethers } from 'ethers';
-	import { smartContractAddress, baseURLScan } from '../../constants.ts';
+	import { freedomCash, baseURLScan } from '../../constants.ts';
 	export let contract;
 	export let publicWalletAddressOfVisitor;
 	export let provider;
@@ -18,7 +18,7 @@
 	});
 
 	async function loadData() {
-		const sCBalance = await contract.balanceOf(smartContractAddress);
+		const sCBalance = await contract.balanceOf(freedomCash);
 		// amountOfCoinsInSmartContractItself = ethers.formatEther(sCBalance);
 		const visitorBalance = await contract.balanceOf(publicWalletAddressOfVisitor);
 		amountOfCoinsInVisitorsWallet = ethers.formatEther(visitorBalance);
@@ -31,7 +31,7 @@
 		}
 
 		amountOfETHInSmartContract = ethers.formatUnits(
-			(await provider.getBalance(smartContractAddress)).toString(),
+			(await provider.getBalance(freedomCash)).toString(),
 			'ether'
 		);
 		readyForDisplay = true;
@@ -53,7 +53,7 @@
 				<td>Wallet Balance</td>
 				<td
 					>{amountOfCoinsInVisitorsWallet}
-					<a href="{baseURLScan}token/{smartContractAddress}#code#L891" target="_blank"
+					<a href="{baseURLScan}token/{freedomCash}#code#L891" target="_blank"
 						>Freedom Cash</a
 					></td
 				>
@@ -63,14 +63,14 @@
 			<td>Smart Contract Balance</td>
 			<td
 				>{Math.round(Number(amountOfCoinsInSmartContractItself) + Number.EPSILON * 10**15 / 10**15)}
-				<a href="{baseURLScan}token/{smartContractAddress}#code#L891" target="_blank">Freedom Cash</a></td
+				<a href="{baseURLScan}token/{freedomCash}#code#L891" target="_blank">Freedom Cash</a></td
 			>
 		</tr>
 		<tr>
 			<td>Underway</td>
 			<td
 				>{Math.round((369369369 - amountOfCoinsInSmartContractItself + Number.EPSILON) * 10**15) / 10**15}
-				<a href="{baseURLScan}token/{smartContractAddress}#code#L891" target="_blank">Freedom Cash</a></td
+				<a href="{baseURLScan}token/{freedomCash}#code#L891" target="_blank">Freedom Cash</a></td
 			>
 		</tr> -->
 			<tr>
@@ -88,8 +88,8 @@
 			<tr>
 				<td>Smart Contract Address</td>
 				<td class="longInfo"
-					><a href="{baseURLScan}token/{smartContractAddress}#code#L891" target="_blank"
-						>{smartContractAddress}</a
+					><a href="{baseURLScan}token/{freedomCash}#code" target="_blank"
+						>{freedomCash}</a
 					></td
 				>
 			</tr>

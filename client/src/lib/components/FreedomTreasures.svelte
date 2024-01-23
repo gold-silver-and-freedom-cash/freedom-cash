@@ -1,0 +1,136 @@
+<script>
+	import { onMount } from 'svelte';
+	import {
+		freedomBets,
+		projectIDGeoCaching,
+		targetChainName,
+		votingPeriodMinLength
+	} from '../../constants.ts';
+	import { connectToBlockchain, replaceContentToShowClickableLinks } from '$lib/helpers.js';
+	import Assets from './Assets.svelte';
+
+	let publicWalletAddressOfVisitor = '';
+	let visitorIsConnectedViaBrowserWallet = false;
+	let visitorHasBrowserWallet = false;
+	let contract;
+	let newTreasure = '';
+	let message = '';
+	let detailsFor = 0;
+	let visitorInformed = true;
+	let treasuresLoaded = false;
+	let treasures = [];
+	let provider;
+	let buttonText = `Connect To ${targetChainName}`;
+
+	onMount(async () => {
+		if (typeof window.ethereum === 'undefined') {
+			visitorHasBrowserWallet = false;
+		} else {
+			visitorHasBrowserWallet = true;
+			const connectionData = await connectToBlockchain();
+			provider = connectionData.provider;
+			contract = connectionData.fBContract;
+			publicWalletAddressOfVisitor = connectionData.publicWalletAddressOfVisitor;
+			visitorIsConnectedViaBrowserWallet = true;
+		}
+	});
+
+	async function addTreasure(projectID) {
+		// const hash = "0x" + hashJs.sha256().update(newAsset).digest('hex')
+		const hash = await contract.getHash(newTreasure);
+		console.log(`adding to ${projectID} asset ${newTreasure} ${hash} ${votingPeriodMinLength}`);
+		await contract.addAsset(projectID, newTreasure, hash, votingPeriodMinLength);
+	}
+
+</script>
+
+<div class="text-center">
+	{#if contract != undefined}
+		<div class="content">
+			Geocachers support Freedom Cash.
+			<p><br /></p>
+			Once you have created and printed a wallet, you can hide it at any beautiful place.
+			<p><br /></p>
+			{#if visitorInformed}
+				<input
+					bind:value={newTreasure}
+					class="myInputField"
+					type="text"
+					placeholder="... add new treasure ..."
+				/>
+				<p><br /></p>
+				{#if newTreasure}
+					<button class="inside" on:click={() => addTreasure(projectIDGeoCaching)}
+						>Add Treasure</button
+					>
+				{/if}
+			{:else}
+				<!-- <FeedbackToVisitor
+		smartContractAddress={freedomBets}
+		{message}
+		on:clickedOK={() => {
+			visitorInformed = true;
+		}}
+	></FeedbackToVisitor> -->
+			{/if}
+			<p><br /><br /><br /></p>
+			<Assets {contract} {publicWalletAddressOfVisitor} {provider} projectID={projectIDGeoCaching}
+			></Assets>
+
+			<p><br /><br /></p>
+		</div>
+	{/if}
+	<p><br /><br /></p>
+	<div class="center">
+		<img
+			class="moniqueImage"
+			src="https://github.com/monique-baumann/FreedomEnterprise/assets/145258627/7a58cce2-5e01-4e2a-b004-2623819d396f"
+			alt="tea"
+		/>
+	</div>
+	<p><br /></p>
+
+	If we do not own freedom, we might own nothing at all.
+	<a href="https://github.com/monique-baumann" target="_blank"><i>Monique Baumann</i></a>
+	<p><br /></p>
+	<p><br /><br /></p>
+	<div class="center">
+		<img
+			class="moniqueImage"
+			src="https://github.com/monique-baumann/FreedomEnterprise/assets/145258627/1e671c0b-91b8-433e-95de-010c87317db4"
+			alt="paperwallet"
+		/>
+	</div>
+</div>
+
+<style>
+	@media only screen and (min-width: 800px) {
+		/* For tablets: */
+		.content {
+			width: 63%;
+			margin-left: auto;
+			margin-right: auto;
+			padding: 0;
+			text-align: center;
+		}
+	}
+	table {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+
+	td,
+	th {
+		border: 1px solid #dddddd;
+		text-align: center;
+		padding: 8px;
+	}
+	tr:nth-child(even) {
+		background-color: #dddddd;
+	}
+	.moniqueImage {
+		width: 450px;
+		border-radius: 9%;
+	}
+</style>

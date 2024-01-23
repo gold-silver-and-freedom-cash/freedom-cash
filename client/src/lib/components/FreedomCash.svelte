@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { baseURLScan, smartContractAddress } from '../../constants.ts';
+	import { baseURLScan, freedomCash } from '../../constants.ts';
 	import FreedomCashDetails from './FreedomCashDetails.svelte';
 	import FreedomBets from './FreedomBets.svelte';
 	import FreedomProjects from './FreedomProjects.svelte';
@@ -44,7 +44,7 @@
 		<p><br /></p>
 
 		I buy and sell
-		<a href="{baseURLScan}token/{smartContractAddress}#code#L891" target="_blank">Freedom Cash</a>,
+		<a href="{baseURLScan}token/{freedomCash}#code" target="_blank">Freedom Cash</a>,
 		silver and gold.
 		<a href="https://github.com/monique-baumann" target="_blank"><i>Monique Baumann</i></a>
 		<p><br /><br /><br /></p>

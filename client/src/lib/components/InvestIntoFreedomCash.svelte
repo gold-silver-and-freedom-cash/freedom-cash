@@ -2,7 +2,7 @@
 	import { ethers } from 'ethers';
 	import { onMount } from 'svelte';
 	import FeedbackToVisitor from './FeedbackToVisitor.svelte';
-	import { baseURLScan, smartContractAddress } from '../../constants.ts';
+	import { baseURLScan, freedomCash } from '../../constants.ts';
 	export let contract;
 	export let provider;
 	export let publicWalletAddressOfVisitor;
@@ -65,7 +65,7 @@
 		{/if}
 	{:else}
 		In order to invest into
-		<a href="{baseURLScan}token/{smartContractAddress}#code#L891" target="_blank">Freedom Cash</a>
+		<a href="{baseURLScan}token/{freedomCash}#code" target="_blank">Freedom Cash</a>
 		, you need to have some Ether on the Polygon zkEVM Blockchain.
 		<p><br /></p>
 		You can transfer some Ether from the Ethereum Mainnet to the Polygon zkEVM Blockchain via
@@ -75,7 +75,7 @@
 		<p><br /></p>
 	{/if}
 {:else}
-	<FeedbackToVisitor {smartContractAddress}
+	<FeedbackToVisitor smartContractAddress={freedomCash}
 		on:clickedOK={() => {
 			visitorInformed = true;
 		}}

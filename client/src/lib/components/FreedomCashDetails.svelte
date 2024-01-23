@@ -1,11 +1,11 @@
 <script>
 	import EducateYourself from '$components/EducateYourself.svelte';
-	import { baseURLScan, smartContractAddress } from '../../constants.ts';
+	import { baseURLScan, freedomCash } from '../../constants.ts';
 </script>
 
 <h4 class="text-center">Total Supply</h4>
 369.369.369
-<a href="{baseURLScan}token/{smartContractAddress}#code#L891" target="_blank">Freedom Cash</a>
+<a href="{baseURLScan}token/{freedomCash}#code" target="_blank">Freedom Cash</a>
 <h4 class="text-center">Utility</h4>
 Funding playgrounds for freedom.
 <p><br /></p>
@@ -20,7 +20,7 @@ pricing algorithm and ensuring that people do not waste gas-, liquidity provider
 
 <h4 class="text-center">Liquidity</h4>
 The total supply of Freedom Cash was minted not to the developer or deployer but to the
-<a href="{baseURLScan}token/{smartContractAddress}#code#L891" target="_blank"> smart contract</a>
+<a href="{baseURLScan}token/{freedomCash}#code" target="_blank"> smart contract</a>
 itself.
 
 <EducateYourself></EducateYourself>
@@ -37,7 +37,7 @@ itself.
 </h6>
 <p><br /></p>
 With our approach we reduce gas fees and avoid pool fees for
-<a href="{baseURLScan}token/{smartContractAddress}#code#L891" target="_blank">Freedom Cash</a>
+<a href="{baseURLScan}token/{freedomCash}#code" target="_blank">Freedom Cash</a>
 investors.
 <p><br /></p>
 Additionally our pricing approach protects against ponzi like vulnerabilities & drops of the sell price.
@@ -55,7 +55,7 @@ The sell price of Freedom Cash expressed in Ether can stay as it is or go up. It
 <EducateYourself></EducateYourself>
 <p><br /></p>
 
-<a href="{baseURLScan}token/{smartContractAddress}#code#L891" target="_blank">
+<a href="{baseURLScan}token/{freedomCash}#code" target="_blank">
 	<div class="center">
 		<img class="tokenomicsImage" src="/price-functions.png" alt="" />
 	</div>

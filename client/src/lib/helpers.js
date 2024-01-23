@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { freedomBets, freedomBetsABI, freedomCashABI, smartContractAddress, targetChainId } from '../constants';
+import { freedomBets, freedomBetsABI, freedomCashABI, freedomCash, targetChainId } from '../constants';
 
 export const isEthereumWalletAddress = (address) => {
     if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
@@ -62,8 +62,7 @@ export const getFirstLinkInText = (text) => {
 
 export const replaceContentToShowClickableLinks = (content) => {
 
-    if (content !== undefined && content.length > 10 && content.indexOf('http') === 0 && content.indexOf("http://localhost:8047") === -1 && content.indexOf("https://cultdonations.org") === -1) {
-
+    if (content !== undefined && content.length >= 9 && content.indexOf('http:') === -1) {
         var exp_match =
             /(\b(https?|):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi
         var element_content = content.replace(
@@ -156,7 +155,7 @@ export const addOneDay = (input) => {
 }
 
 export const connectToBlockchain = async () => {
-    let connectionData ={
+    let connectionData = {
         provider: {},
         contract: {},
         publicWalletAddressOfVisitor: ""
@@ -193,7 +192,7 @@ export const connectToBlockchain = async () => {
 
         connectionData.provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await connectionData.provider.getSigner();
-        connectionData.contract = new ethers.Contract(smartContractAddress, freedomCashABI, signer);
+        connectionData.contract = new ethers.Contract(freedomCash, freedomCashABI, signer);
         connectionData.fBContract = new ethers.Contract(freedomBets, freedomBetsABI, signer);
         connectionData.publicWalletAddressOfVisitor = accounts[0];
         window.ethereum.on('chainChanged', handleChainChanged);
@@ -205,11 +204,23 @@ export const connectToBlockchain = async () => {
         alert(`the account has been changed via Metamask. So I reload.`);
         window.location.reload();
     });
-    
+
     return connectionData
 }
-function handleChainChanged(chainId) {
+export const handleChainChanged = (chainId) => {
     // await connectToBlockchain()
     alert(`the chain has been changed via Metamask. So I reload.`);
     window.location.reload();
 }    
+
+export const shuffle = (array) => {
+    let currentIndex = array.length,
+        randomIndex;
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}
