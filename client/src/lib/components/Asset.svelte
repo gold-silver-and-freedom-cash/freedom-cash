@@ -17,21 +17,23 @@
 		const buyPrice = await fCContract.getBuyPrice(amountToBeBoughtInWei);
 		const cost = BigInt(amount) * buyPrice;
 		const ethInWallet = BigInt(await provider.getBalance(publicWalletAddressOfVisitor));
-		try {
-			const estimatedGas = await contract.appreciateAsset.estimateGas(
-				assetID,
-				amountToBeBoughtInWei,
-				buyPrice,
-				{
-					value: BigInt(cost)
-				}
-			);
-			const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
-			if (ethInWallet < cost + BigInt(estimatedGasCost)) {
-				alert('you might enter a smaller amount');
-			} else {
+		// try {
+			// alert(ethInWallet);
+			// const estimatedGas = await contract.appreciateAsset.estimateGas(
+			// 	assetID,
+			// 	amountToBeBoughtInWei,
+			// 	buyPrice,
+			// 	{
+			// 		value: BigInt(cost)
+			// 	}
+			// );
+			// const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
+			// if (ethInWallet < cost + BigInt(estimatedGasCost)) {
+			// 	alert('you might enter a smaller amount');
+			// } else {
 				try {
 					if (up) {
+						console.log(assetID, amountToBeBoughtInWei, buyPrice)
 						await contract.appreciateAsset(assetID, amountToBeBoughtInWei, buyPrice, {
 							value: BigInt(cost)
 						});
@@ -42,12 +44,13 @@
 					}
 					visitorInformed = false;
 				} catch (error) {
+					alert(error.message)
 					alert('you might enter a smaller amount');
 				}
-			}
-		} catch (error) {
-			alert(error);
-		}
+//			}
+		// } catch (error) {
+		// 	alert(error);
+		// }
 	}
 	async function donate(assetID) {
 		const signer = await provider.getSigner();
@@ -56,8 +59,7 @@
 		const buyPrice = await eCContract.getBuyPrice(amountToBeDonatedInWei);
 		const cost = BigInt(donationAmount) * buyPrice;
 		const ethInWallet = BigInt(await provider.getBalance(publicWalletAddressOfVisitor));
-		const donationReceiver = (await contract.assets(assetID));
-		alert(donationReceiver)
+		const donationReceiver = await contract.assetCreators(assetID);
 		try {
 			const estimatedGas = await eCContract.donate.estimateGas(
 				donationReceiver,
@@ -71,7 +73,10 @@
 			if (ethInWallet < cost + BigInt(estimatedGasCost)) {
 				alert('you might enter a smaller amount');
 			} else {
-				await eCContract.donate(donationReceiver, amountToBeDonatedInWei, buyPrice);
+				console.log(`donating to ${donationReceiver} ${amountToBeDonatedInWei} ${buyPrice}`)
+				await eCContract.donate(donationReceiver, amountToBeDonatedInWei, buyPrice, {
+					value: BigInt(cost)
+				});
 			}
 		} catch (error) {
 			alert(error.message);
@@ -118,7 +123,7 @@
 			<button class="inside" on:click={() => vote(asset.id, false)}>Depreciate</button>
 			<p><br /></p>
 		{/if}
-		{#if asset.reconciliationFrom < new Date().getTime() / 1000}
+		{#if asset.reconciliationFrom < new Date().getTime() / 1000 && amount == undefined}
 			<button class="inside" on:click={() => contract.reconcile(asset.id)}>Reconcile</button>
 		{/if}
 	{/if}

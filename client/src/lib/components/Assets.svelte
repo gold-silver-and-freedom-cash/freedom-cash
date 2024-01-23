@@ -40,7 +40,7 @@
 		while (counter < projectAssets.length) {
 			let assetRaw = await contract.assets(projectAssets[counter]);
 			const asset = {
-				id: Number(await contract.projectAssets[counter]),
+				id: projectAssets[counter],
 				text: assetRaw.text,
 				upVoteScore: Number(ethers.formatEther(assetRaw.upVoteScore)),
 				downVoteScore: Number(ethers.formatEther(assetRaw.downVoteScore)),
