@@ -1,10 +1,10 @@
 
-// export const freedomBets = '0x6e30d379C92Cc452a44213B2a9FCed71E2D32149'; 
-export const freedomBets = '0x29932185fB7450d8320a849A2CCeB8c016535Ffe'; // testnet
-export const freedomCash = '0x1E7A208810366D0562c7Ba93F883daEedBf31410'; // testnet
+export const freedomBets = '0xEf1616578068C0Af55370B0C262e84d912367Aef'; 
+// export const freedomBets = '0x29932185fB7450d8320a849A2CCeB8c016535Ffe'; // testnet
+// export const freedomCash = '0x1E7A208810366D0562c7Ba93F883daEedBf31410'; // testnet
 export const earthCoin = '0xC2aF1DA8A1007Bf414e820d5Ea77Bba0cc9086bE'; // testnet
 // export const earthCoin = '0x39C421D55fbd788A7a546d2C9d666F4CCD061aB3'; 
-// export const freedomCash = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
+export const freedomCash = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
 // export const smartContractAddress = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
 // export const freedomChats = '0x97f9723BCb41C60bB4f6e01bf59B6Ce8B2364466';
 export const projectIDGeoCaching = 1
