@@ -46,7 +46,7 @@
 				downVoteScore: Number(ethers.formatEther(assetRaw.downVoteScore)),
 				reconciliationFrom: Number(assetRaw.reconciliationFrom),
 				reconciled: assetRaw.reconciled,
-				iframe: ''
+				embedLink: ''
 			};
 			const startIndex = asset.text.indexOf('https://rumble.com/')
 			if (startIndex !== -1) {
@@ -57,11 +57,11 @@
 				const rumbleLink = asset.text.substr(startIndex, endIndex)
 				console.log(rumbleLink)
 				if (endIndex === -1) {
-					asset.iframe = rest;
+					asset.embedLink = rest;
 				} else {
-					asset.iframe = rest.substr(0, endIndex)
+					asset.embedLink = rest.substr(0, endIndex)
 				}
-				'https://rumble.com/embed/v3ug1ua/?pub=1e5w3p'
+				asset.embedLink = 'https://rumble.com/embed/v3ug1ua/?pub=1e5w3p'
 			}
 			assets.push(asset);
 			counter++;

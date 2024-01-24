@@ -79,19 +79,17 @@
 </script>
 
 <div class="card {asset.reconciled ? 'reconciled' : 'open'}">
-	{#if (asset.iframe !== "")}
+	{#if asset.iframe !== ''}
 		{@html replaceContentToShowClickableLinks(asset.text)}
-		<p><br></p>
-		<!-- <video width="320" height="240" controls>
-			<track kind="captions">
-			<source src="https://rumble.com/v3x1fjj-freedomcashing-freedomcaching-geocashing-freedom-geocashingcult-ryoshi-free.html" type="video/mp4">
-			<source src="movie.ogg" type="video/ogg">
-		  Your browser does not support the video tag.
-		  </video> -->
-		<!-- <iframe title="Freedom Treasure" class="rumble" width="640" height="360" src={asset.iframe} frameborder="0" allowfullscreen></iframe>	 -->
+		<p><br /></p>
+
+		<div class="embedVideo">
+			<object title="super" data={asset.embedLink}>
+			</object>
+		</div>
 		<!-- https://stackoverflow.com/questions/64863488/get-embed-video-id-from-within-rumble-com-html -->
 	{:else}
-	{@html replaceContentToShowClickableLinks(asset.text)}
+		{@html replaceContentToShowClickableLinks(asset.text)}
 	{/if}
 	<p><br /></p>
 	<span class="score-up">Ups: {asset.upVoteScore} </span> vs.
@@ -138,6 +136,23 @@
 <p><br /><br /></p>
 
 <style>
+	.embedVideo {
+		position: relative;
+		padding-bottom: 56.25%; /* 16:9, for an aspect ratio of 1:1 change to this value to 100% */
+	}
+	object {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+	/* .embedVideo {
+		margin-left: auto;
+		margin-right: auto;
+		width: 100%;
+		text-align: center;
+	} */
 	.reconciled {
 		background-color: #dddddd;
 	}
