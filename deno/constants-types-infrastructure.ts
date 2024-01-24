@@ -1,8 +1,9 @@
 import { ethers, Logger } from "../deps.ts"
 
-export const FC = "0x1E7A208810366D0562c7Ba93F883daEedBf31410" // testnet
-export const freedomBets = "0xB16a0ba8B3B4395C2B90ac3A80436ba34b9E20DD" // testnet
-// export const FC = "0xa1e7bB978a28A30B34995c57d5ba0B778E90033B"
+export const freedomBets = "0x0F31A3D3fee92Bd50F8E1D61340cdDb3901a573B" // testnet
+export const FC = "0xe8Fe83274B6E2b91f17000ADA331a68f4267E1cF" // testnet
+// export const freedomBets = "0x29932185fB7450d8320a849A2CCeB8c016535Ffe" 
+// export const FC = "0xa1e7bB978a28A30B34995c57d5ba0B778E90033B" 
 export const ROUTER = "0xE592427A0AEce92De3Edee1F18E0157C05861564"
 export const CULT = "0xf0f9D895aCa5c8678f706FB8216fa22957685A13"
 export const POD = "0xE90CE7764d8401d19ed3733a211bd3b06c631Bc0"
@@ -63,13 +64,14 @@ export function getProvider(logger: Logger) {
 export function getABI(url: string) {
     return JSON.parse(Deno.readTextFileSync(url))
 }
-export async function getContract(asset: string, provider: any, url: string): Promise<any> {
+export async function getContract(contractAddress: string, provider: any, url: string): Promise<any> {
     const configuration = JSON.parse(Deno.readTextFileSync('./.env.json'))
     const wallet = new ethers.Wallet(configuration.pkTestWallet, provider)
     const signer = await wallet.connect(provider)
-    console.log(await signer.getAddress())
-    // return new ethers.Contract(asset, getABI(url), await provider.getSigner())
-    return new ethers.Contract(asset, getABI(url), signer)
+    console.log(`signer address: ${await signer.getAddress()}`)
+    console.log(`getting contract ${contractAddress}`)
+    // return new ethers.Contract(contractAddress, getABI(url), await provider.getSigner())
+    return new ethers.Contract(contractAddress, getABI(url), signer)
 }
 
 export function getProviderURL(logger: Logger): string {

@@ -48,9 +48,8 @@
 				reconciled: assetRaw.reconciled,
 				embedLink: ''
 			};
-			const startIndex = asset.text.indexOf('https://rumble.com/')
+			const startIndex = asset.text.indexOf('https://rumble.com/embed/')
 			if (startIndex !== -1) {
-				// alert(asset.text.indexOf('https://rumble.com/'))
 				const rest = asset.text.substr(startIndex, asset.text.length - 1) 
 				console.log(rest)
 				const endIndex = rest.indexOf(" ")
@@ -61,7 +60,6 @@
 				} else {
 					asset.embedLink = rest.substr(0, endIndex)
 				}
-				asset.embedLink = 'https://rumble.com/embed/v3ug1ua/?pub=1e5w3p'
 			}
 			assets.push(asset);
 			counter++;

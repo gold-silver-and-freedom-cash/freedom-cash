@@ -79,7 +79,7 @@
 </script>
 
 <div class="card {asset.reconciled ? 'reconciled' : 'open'}">
-	{#if asset.iframe !== ''}
+	{#if asset.embedLink !== ''}
 		{@html replaceContentToShowClickableLinks(asset.text)}
 		<p><br /></p>
 
