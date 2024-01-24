@@ -17,40 +17,34 @@
 		const buyPrice = await fCContract.getBuyPrice(amountToBeBoughtInWei);
 		const cost = BigInt(amount) * buyPrice;
 		const ethInWallet = BigInt(await provider.getBalance(publicWalletAddressOfVisitor));
-		// try {
-			// alert(ethInWallet);
-			// const estimatedGas = await contract.appreciateAsset.estimateGas(
-			// 	assetID,
-			// 	amountToBeBoughtInWei,
-			// 	buyPrice,
-			// 	{
-			// 		value: BigInt(cost)
-			// 	}
-			// );
-			// const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
-			// if (ethInWallet < cost + BigInt(estimatedGasCost)) {
-			// 	alert('you might enter a smaller amount');
-			// } else {
-				try {
-					if (up) {
-						console.log(assetID, amountToBeBoughtInWei, buyPrice)
-						await contract.appreciateAsset(assetID, amountToBeBoughtInWei, buyPrice, {
-							value: BigInt(cost)
-						});
-					} else {
-						await contract.depreciateAsset(assetID, amountToBeBoughtInWei, buyPrice, {
-							value: BigInt(cost)
-						});
-					}
-					visitorInformed = false;
-				} catch (error) {
-					alert(error.message)
-					alert('you might enter a smaller amount');
+		try {
+			const estimatedGas = await contract.appreciateAsset.estimateGas(
+				assetID,
+				amountToBeBoughtInWei,
+				buyPrice,
+				{
+					value: BigInt(cost)
 				}
-//			}
-		// } catch (error) {
-		// 	alert(error);
-		// }
+			);
+			const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
+			if (ethInWallet < cost + BigInt(estimatedGasCost)) {
+				throw new Error('you might enter a smaller amount');
+			} else {
+				if (up) {
+					console.log(assetID, amountToBeBoughtInWei, buyPrice);
+					await contract.appreciateAsset(assetID, amountToBeBoughtInWei, buyPrice, {
+						value: BigInt(cost)
+					});
+				} else {
+					await contract.depreciateAsset(assetID, amountToBeBoughtInWei, buyPrice, {
+						value: BigInt(cost)
+					});
+				}
+				visitorInformed = false;
+			}
+		} catch (error) {
+			alert(error);
+		}
 	}
 	async function donate(assetID) {
 		const signer = await provider.getSigner();
@@ -73,7 +67,7 @@
 			if (ethInWallet < cost + BigInt(estimatedGasCost)) {
 				alert('you might enter a smaller amount');
 			} else {
-				console.log(`donating to ${donationReceiver} ${amountToBeDonatedInWei} ${buyPrice}`)
+				console.log(`donating to ${donationReceiver} ${amountToBeDonatedInWei} ${buyPrice}`);
 				await eCContract.donate(donationReceiver, amountToBeDonatedInWei, buyPrice, {
 					value: BigInt(cost)
 				});
@@ -85,7 +79,20 @@
 </script>
 
 <div class="card {asset.reconciled ? 'reconciled' : 'open'}">
+	{#if (asset.iframe !== "")}
+		{@html replaceContentToShowClickableLinks(asset.text)}
+		<p><br></p>
+		<!-- <video width="320" height="240" controls>
+			<track kind="captions">
+			<source src="https://rumble.com/v3x1fjj-freedomcashing-freedomcaching-geocashing-freedom-geocashingcult-ryoshi-free.html" type="video/mp4">
+			<source src="movie.ogg" type="video/ogg">
+		  Your browser does not support the video tag.
+		  </video> -->
+		<!-- <iframe title="Freedom Treasure" class="rumble" width="640" height="360" src={asset.iframe} frameborder="0" allowfullscreen></iframe>	 -->
+		<!-- https://stackoverflow.com/questions/64863488/get-embed-video-id-from-within-rumble-com-html -->
+	{:else}
 	{@html replaceContentToShowClickableLinks(asset.text)}
+	{/if}
 	<p><br /></p>
 	<span class="score-up">Ups: {asset.upVoteScore} </span> vs.
 	<span class="score-down">Downs: {asset.downVoteScore} </span>

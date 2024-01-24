@@ -45,8 +45,24 @@
 				upVoteScore: Number(ethers.formatEther(assetRaw.upVoteScore)),
 				downVoteScore: Number(ethers.formatEther(assetRaw.downVoteScore)),
 				reconciliationFrom: Number(assetRaw.reconciliationFrom),
-				reconciled: assetRaw.reconciled
+				reconciled: assetRaw.reconciled,
+				iframe: ''
 			};
+			const startIndex = asset.text.indexOf('https://rumble.com/')
+			if (startIndex !== -1) {
+				// alert(asset.text.indexOf('https://rumble.com/'))
+				const rest = asset.text.substr(startIndex, asset.text.length - 1) 
+				console.log(rest)
+				const endIndex = rest.indexOf(" ")
+				const rumbleLink = asset.text.substr(startIndex, endIndex)
+				console.log(rumbleLink)
+				if (endIndex === -1) {
+					asset.iframe = rest;
+				} else {
+					asset.iframe = rest.substr(0, endIndex)
+				}
+				'https://rumble.com/embed/v3ug1ua/?pub=1e5w3p'
+			}
 			assets.push(asset);
 			counter++;
 		}

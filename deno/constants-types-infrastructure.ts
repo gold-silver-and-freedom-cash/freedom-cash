@@ -1,9 +1,8 @@
 import { ethers, Logger } from "../deps.ts"
 
-// export const freedomBets = "0x8C45bA4c0bAe3898C01DEae81a47Ef469d59b15D" // testnet
-// export const FC = "0x1E7A208810366D0562c7Ba93F883daEedBf31410" // testnet
-export const freedomBets = "0x6e30d379C92Cc452a44213B2a9FCed71E2D32149" 
-export const FC = "0xa1e7bB978a28A30B34995c57d5ba0B778E90033B"
+export const FC = "0x1E7A208810366D0562c7Ba93F883daEedBf31410" // testnet
+export const freedomBets = "0xB16a0ba8B3B4395C2B90ac3A80436ba34b9E20DD" // testnet
+// export const FC = "0xa1e7bB978a28A30B34995c57d5ba0B778E90033B"
 export const ROUTER = "0xE592427A0AEce92De3Edee1F18E0157C05861564"
 export const CULT = "0xf0f9D895aCa5c8678f706FB8216fa22957685A13"
 export const POD = "0xE90CE7764d8401d19ed3733a211bd3b06c631Bc0"
@@ -14,6 +13,7 @@ export const MrO = "0x5FDF0f97954cc22d23268D930e69DC7F53018261"
 export const WETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
 export const UNI = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
 export const CENTRALIZEDFRAUD = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+export const baseURLScan = "https://zkevm.polygonscan.com/"
 
 export enum EMode {
     actionRandom,
@@ -60,17 +60,16 @@ export async function getLogger() {
 export function getProvider(logger: Logger) {
     return new ethers.JsonRpcProvider(getProviderURL(logger))
 }
-export function getABI() {
-    return JSON.parse(Deno.readTextFileSync('./blockchain/freedom-cash-abi.json'))
+export function getABI(url: string) {
+    return JSON.parse(Deno.readTextFileSync(url))
 }
-export async function getContract(asset: string, provider: any): Promise<any> {
+export async function getContract(asset: string, provider: any, url: string): Promise<any> {
     const configuration = JSON.parse(Deno.readTextFileSync('./.env.json'))
     const wallet = new ethers.Wallet(configuration.pkTestWallet, provider)
     const signer = await wallet.connect(provider)
     console.log(await signer.getAddress())
-    return new ethers.Contract(asset, getABI(), signer)
-    // return new ethers.Contract(asset, abi, wallet)
-    // return new ethers.Contract(asset, getABI(), await provider.getSigner())
+    // return new ethers.Contract(asset, getABI(url), await provider.getSigner())
+    return new ethers.Contract(asset, getABI(url), signer)
 }
 
 export function getProviderURL(logger: Logger): string {
