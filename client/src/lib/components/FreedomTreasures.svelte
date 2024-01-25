@@ -9,17 +9,18 @@
 	import { connectToBlockchain } from '$lib/helpers.js';
 	import Assets from './Assets.svelte';
 
-	let publicWalletAddressOfVisitor = '';
 	let visitorIsConnectedViaBrowserWallet = false;
 	let visitorHasBrowserWallet = false;
+	let publicWalletAddressOfVisitor = '';
 	let contract;
+	let provider;
 	let newTreasure = '';
 	let message = '';
 	let detailsFor = 0;
 	let visitorInformed = true;
 	let treasuresLoaded = false;
+	let prepareNewTreasure = false;
 	let treasures = [];
-	let provider;
 	let buttonText = `Connect To ${targetChainName}`;
 
 	onMount(async () => {
@@ -37,11 +38,10 @@
 
 	async function addTreasure(projectID) {
 		// const hash = "0x" + hashJs.sha256().update(newAsset).digest('hex')
-		const assetID = (await contract.assetCounter()) + BigInt(1)
+		const assetID = (await contract.assetCounter()) + BigInt(1);
 		console.log(`adding to ${projectID} asset ${newTreasure} ${assetID} ${votingPeriodMinLength}`);
 		await contract.addAsset(projectID, newTreasure, assetID, votingPeriodMinLength);
 	}
-
 </script>
 
 <div class="text-center">
@@ -51,26 +51,39 @@
 			<p><br /></p>
 			Once you have created and printed a wallet, you can hide it at any beautiful place.
 			<p><br /></p>
-			After that you can share a link to a photo or video of that place.
+			After that you can share a link to a photo or video of that place. I was here and hided ...
 
-			I was here and hided ... 
-			
 			<p><br /><br /><br /></p>
 			<Assets {contract} {publicWalletAddressOfVisitor} {provider} projectID={projectIDGeoCaching}
 			></Assets>
 			<p><br /></p>
 			{#if visitorInformed}
-				<input
-					bind:value={newTreasure}
-					class="myInputField"
-					type="text"
-					placeholder="... add new treasure ..."
-				/>
-				<p><br /></p>
-				{#if newTreasure}
-					<button class="inside" on:click={() => addTreasure(projectIDGeoCaching)}
-						>Add Treasure</button
-					>
+				<button
+					on:click={() => {
+						prepareNewTreasure = !prepareNewTreasure;
+					}}>Add Treasure</button
+				>
+				{#if prepareNewTreasure}
+					<p><br /></p>
+					<div class="center">
+						<img
+							src="https://github.com/monique-baumann/freedom-cash/assets/145258627/97bc4bbf-2b58-4806-92eb-d6517f08685e"
+							alt="example"
+						/>
+					</div>
+					<p><br /></p>
+					<input
+						bind:value={newTreasure}
+						class="myInputField"
+						type="text"
+						placeholder="... add new treasure ..."
+					/>
+					<p><br /></p>
+					{#if newTreasure}
+						<button class="inside" on:click={() => addTreasure(projectIDGeoCaching)}
+							>Add Treasure</button
+						>
+					{/if}
 				{/if}
 			{:else}
 				<!-- <FeedbackToVisitor

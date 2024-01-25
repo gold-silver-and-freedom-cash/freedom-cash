@@ -8,6 +8,7 @@ export const freedomCash = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
 // export const smartContractAddress = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
 // export const freedomChats = '0x97f9723BCb41C60bB4f6e01bf59B6Ce8B2364466';
 export const projectIDGeoCaching = 1
+export const projectIDFreedomExchange = 2
 export const targetChainName = 'Polygon ZKEVM';
 export const votingPeriodMinLength = 180
 

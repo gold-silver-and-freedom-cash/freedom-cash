@@ -30,6 +30,7 @@
 			visitorIsConnectedViaBrowserWallet = true;
 		}
 	});
+
 </script>
 
 <section class="text-center">
@@ -98,6 +99,7 @@
 		<p><br /></p>
 		<FreedomProjects></FreedomProjects>
 	{/if}
+
 </section>
 
 <style>
