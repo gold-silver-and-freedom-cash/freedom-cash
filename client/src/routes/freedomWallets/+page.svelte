@@ -7,6 +7,16 @@
 <div class="text-center content">
 	<h2>Freedom Wallets</h2>
 
+	<div class="center">
+		<img
+			class="moniqueImage"
+			src="https://github.com/monique-baumann/FreedomEnterprise/assets/145258627/1e671c0b-91b8-433e-95de-010c87317db4"
+			alt="paperwallet"
+		/>
+	</div>
+	Paperwallets help to make crypto cypherpunk again.
+	<a href="https://github.com/monique-baumann" target="_blank"><i>Monique Baumann</i></a>
+	<p><br></p>
 	<h4>Preparational Education</h4>
 	<p><br /></p>
 	<h6>Online Wallets</h6>
@@ -35,6 +45,8 @@
 	<embed src="https://monique-baumann.github.io/paperwallet-generator/" width="100%" height="810" />
 
 	<p><br /></p>
+
+
 </div>
 
 <style>
@@ -48,4 +60,8 @@
 			text-align: center;
 		}
 	}
+	.moniqueImage {
+		width: 450px;
+		border-radius: 9%;
+	}	
 </style>

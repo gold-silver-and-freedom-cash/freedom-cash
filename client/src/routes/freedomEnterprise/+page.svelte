@@ -1,5 +1,14 @@
 <script>
 	import Seo from '$lib/components/Seo.svelte';
+
+	const workItem1 = {
+		type: "task"
+	}
+	const workItem2 = {
+		type: "solutionProposal",
+		text: "",
+		link: ""
+	}
 </script>
 
 <Seo title="Freedom Enterprise" />
@@ -14,7 +23,7 @@
 	</div>
 
 	<p><br></p>
-	We work hand in hand to free ourselves and free the world.
+	We exclude corrupt entities by collaborating peer to peer.
 	<a href="https://github.com/monique-baumann" target="_blank"><i>Monique Baumann</i></a>
 	<p><br /></p>
 </div>

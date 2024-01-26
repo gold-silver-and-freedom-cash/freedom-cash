@@ -154,6 +154,85 @@ export const addOneDay = (input) => {
     return result
 }
 
+export const loadAssets = async (contract, projectID) => {
+    let assets = [];
+    if (projectID === 0) {
+        let countProjects = 0;
+        const projectCounter = await contract.projectCounter();
+        while (countProjects < projectCounter) {
+            countProjects++;
+            assets = assets.concat(await getAssetsForProjectID(contract, countProjects))
+        }
+    } else {
+        assets = await getAssetsForProjectID(contract, projectID);
+    }
+    return assets
+}
+export const getAssetsForProjectID = async (contract, projectID) => {
+    const projectAssets = await contract.getProjectAssets(projectID);
+    let counter = 0;
+    let assets = []
+    while (counter < projectAssets.length) {
+        let assetRaw = await contract.assets(projectAssets[counter]);
+        const asset = {
+            id: projectAssets[counter],
+            text: assetRaw.text,
+            upVoteScore: Number(ethers.formatEther(assetRaw.upVoteScore)),
+            downVoteScore: Number(ethers.formatEther(assetRaw.downVoteScore)),
+            reconciliationFrom: Number(assetRaw.reconciliationFrom),
+            reconciled: assetRaw.reconciled,
+            embedLink: '',
+            imageLink: '',
+            lat: '',
+            lon: '',
+            txt: ''
+        };
+        let startIndex = asset.text.indexOf('https://rumble.com/embed/');
+        if (startIndex !== -1) {
+            const rest = asset.text.substr(startIndex, asset.text.length - 1);
+            console.log(rest);
+            const endIndex = rest.indexOf(' ');
+            const rumbleLink = asset.text.substr(startIndex, endIndex);
+            console.log(rumbleLink);
+            if (endIndex === -1) {
+                asset.embedLink = rest;
+            } else {
+                asset.embedLink = rest.substr(0, endIndex);
+            }
+        }
+        if (asset.text.indexOf('{') === 0) {
+            const parsed = JSON.parse(asset.text);
+            asset.lat = parsed.lat;
+            asset.lon = parsed.lon;
+            asset.text = parsed.txt;
+            startIndex = asset.text.indexOf('https://mega.nz/file/');
+            if (startIndex !== -1) {
+                const rest = asset.text.substr(startIndex, asset.text.length - 1);
+                console.log(rest);
+                const endIndex = rest.indexOf(' ');
+                const megaLink = asset.text.substr(startIndex, endIndex- 1);
+                console.log(megaLink);
+                if (endIndex === -1) {
+                    asset.imageLink = rest;
+                } else {
+                    asset.imageLink = rest.substr(0, endIndex -1);
+                }
+            }
+        }
+        assets.push(asset);
+        counter++;
+    }
+    return assets
+}
+
+export const getTextWithoutLink = (text, link) => {
+    const startIndex = text.indexOf(link);
+    const endIndex = startIndex + link.length;
+    const part1 = text.substr(0, text.indexOf(link));
+    const part2 = text.substr(endIndex, text.length);
+    return `${part1}${part2}`;
+}
+
 export const connectToBlockchain = async () => {
     let connectionData = {
         provider: {},
@@ -176,7 +255,7 @@ export const connectToBlockchain = async () => {
                     method: 'wallet_addEthereumChain',
                     params: [
                         {
-                            chainId: '0x44d',
+                            chainId: targetChainId,
                             chainName: 'Polygon zkEVM',
                             rpcUrls: ['https://zkevm-rpc.com'],
                             nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },

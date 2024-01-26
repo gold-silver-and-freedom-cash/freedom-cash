@@ -1,7 +1,7 @@
 <script>
-	import { ethers } from 'ethers';
 	import { onMount } from 'svelte';
 	import Asset from './Asset.svelte';
+	import { loadAssets } from '$lib/helpers';
 	export let contract;
 	export let publicWalletAddressOfVisitor;
 	export let provider;
@@ -14,57 +14,11 @@
 	let typingActive = false;
 
 	onMount(async () => {
-		loadData();
-	});
-
-	async function loadData() {
-		if (projectID === 0) {
-			let countProjects = 0;
-			const projectCounter = await contract.projectCounter();
-			assets = [];
-			readyForDisplay = false;
-			while (countProjects < projectCounter) {
-				countProjects++;
-				await getAssetsForProjectID(countProjects);
-			}
-		} else {
-			await getAssetsForProjectID(projectID);
-		}
-
+		readyForDisplay = false;
+		const assets = await loadAssets(contract, projectID);
 		filteredassets = [...assets];
 		readyForDisplay = true;
-	}
-	async function getAssetsForProjectID(projectID) {
-		const projectAssets = await contract.getProjectAssets(projectID);
-		let counter = 0;
-		while (counter < projectAssets.length) {
-			let assetRaw = await contract.assets(projectAssets[counter]);
-			const asset = {
-				id: projectAssets[counter],
-				text: assetRaw.text,
-				upVoteScore: Number(ethers.formatEther(assetRaw.upVoteScore)),
-				downVoteScore: Number(ethers.formatEther(assetRaw.downVoteScore)),
-				reconciliationFrom: Number(assetRaw.reconciliationFrom),
-				reconciled: assetRaw.reconciled,
-				embedLink: ''
-			};
-			const startIndex = asset.text.indexOf('https://rumble.com/embed/')
-			if (startIndex !== -1) {
-				const rest = asset.text.substr(startIndex, asset.text.length - 1) 
-				console.log(rest)
-				const endIndex = rest.indexOf(" ")
-				const rumbleLink = asset.text.substr(startIndex, endIndex)
-				console.log(rumbleLink)
-				if (endIndex === -1) {
-					asset.embedLink = rest;
-				} else {
-					asset.embedLink = rest.substr(0, endIndex)
-				}
-			}
-			assets.push(asset);
-			counter++;
-		}
-	}
+	});
 
 	const onKeyDown = () => {
 		filteredassets = [...assets];

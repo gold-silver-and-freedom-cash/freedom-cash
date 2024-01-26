@@ -1,7 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
 	import {
-		freedomBets,
 		projectIDGeoCaching,
 		targetChainName,
 		votingPeriodMinLength
@@ -16,12 +15,9 @@
 	let provider;
 	let newTreasure = '';
 	let message = '';
-	let detailsFor = 0;
 	let visitorInformed = true;
 	let treasuresLoaded = false;
 	let prepareNewTreasure = false;
-	let treasures = [];
-	let buttonText = `Connect To ${targetChainName}`;
 
 	onMount(async () => {
 		if (typeof window.ethereum === 'undefined') {
@@ -108,16 +104,8 @@
 	<p><br /></p>
 
 	If we do not own freedom, we might own nothing at all.
-	<a href="https://github.com/monique-baumann" target="_blank"><i>Monique Baumann</i></a>
+	<i>Steffen</i>
 	<p><br /></p>
-	<p><br /><br /></p>
-	<div class="center">
-		<img
-			class="moniqueImage"
-			src="https://github.com/monique-baumann/FreedomEnterprise/assets/145258627/1e671c0b-91b8-433e-95de-010c87317db4"
-			alt="paperwallet"
-		/>
-	</div>
 </div>
 
 <style>
@@ -131,21 +119,7 @@
 			text-align: center;
 		}
 	}
-	table {
-		font-family: arial, sans-serif;
-		border-collapse: collapse;
-		width: 100%;
-	}
-
-	td,
-	th {
-		border: 1px solid #dddddd;
-		text-align: center;
-		padding: 8px;
-	}
-	tr:nth-child(even) {
-		background-color: #dddddd;
-	}
+	
 	.moniqueImage {
 		width: 450px;
 		border-radius: 9%;

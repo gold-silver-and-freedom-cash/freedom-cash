@@ -4,7 +4,10 @@ body {
 	font-size: var(--font-200);
 	min-height: 100vh;
 }
-
+.moniqueImage {
+	width: 450px;
+	border-radius: 9%;
+}
 .tokenomicsImage {
 	width: 1000px;
 }

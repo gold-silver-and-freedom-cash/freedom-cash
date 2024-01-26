@@ -113,8 +113,5 @@
 			text-align: center;
 		}
 	}
-	.moniqueImage {
-		width: 450px;
-		border-radius: 9%;
-	}
+
 </style>
