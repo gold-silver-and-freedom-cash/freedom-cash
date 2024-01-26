@@ -10,8 +10,6 @@
 	let visitorHasBrowserWallet = false;
 	let contract;
 
-	let accounts;
-	let showDetails;
 	let provider;
 	let claimableRewards = 0;
 

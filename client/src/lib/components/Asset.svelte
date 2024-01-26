@@ -2,10 +2,12 @@
 	import { ethers } from 'ethers';
 	import { earthCoin, earthCoinABI, freedomCash, freedomCashABI } from '../../constants';
 	import { replaceContentToShowClickableLinks } from '$lib/helpers';
+	import Map from './Map.svelte';
 	export let asset;
 	export let contract;
 	export let provider;
 	export let publicWalletAddressOfVisitor;
+
 	let donationAmount;
 	let visitorInformed = true;
 	let amount;
@@ -76,26 +78,39 @@
 			alert(error.message);
 		}
 	}
+	function getTextWithoutLink(text, link) {
+		const startIndex = text.indexOf(link);
+		const endIndex = startIndex + link.length;
+		const part1 = text.substr(0, text.indexOf(link));
+		const part2 = text.substr(endIndex, text.length);
+		return `${part1}${part2}`;
+	}
 </script>
 
 <div class="card {asset.reconciled ? 'reconciled' : 'open'}">
 	{#if asset.embedLink !== ''}
-		{@html replaceContentToShowClickableLinks(asset.text)}
+		{@html replaceContentToShowClickableLinks(getTextWithoutLink(asset.text, asset.embedLink))}
+		<p><br /></p>
+		<div class="embedVideo">
+			<object title="super" data={asset.embedLink}> </object>
+		</div>
+	{:else if asset.imageLink !== ''}
+		{@html replaceContentToShowClickableLinks(getTextWithoutLink(asset.text, asset.imageLink))}
 		<p><br /></p>
 
-		<div class="embedVideo">
-			<object title="super" data={asset.embedLink}>
-			</object>
-		</div>
-		<!-- https://stackoverflow.com/questions/64863488/get-embed-video-id-from-within-rumble-com-html -->
+		<Map pois={[{ lat: 47.365365, long: 8.541248 }]} map {contract}></Map>
+		<!-- <div class="center">
+			<img class="moniqueImage" src={asset.imageLink} alt="" />
+		</div> -->
 	{:else}
 		{@html replaceContentToShowClickableLinks(asset.text)}
 	{/if}
+
 	<p><br /></p>
 	<span class="score-up">Ups: {asset.upVoteScore} </span> vs.
 	<span class="score-down">Downs: {asset.downVoteScore} </span>
 
-	{#if asset.reconciled}
+	{#if asset.reconciled || (asset.upVoteScore === 0 && asset.downVoteScore === 0)}
 		<p><br /></p>
 		<input
 			bind:value={donationAmount}
@@ -128,7 +143,7 @@
 			<button class="inside" on:click={() => vote(asset.id, false)}>Depreciate</button>
 			<p><br /></p>
 		{/if}
-		{#if asset.reconciliationFrom < new Date().getTime() / 1000 && amount == undefined}
+		{#if asset.reconciliationFrom < new Date().getTime() / 1000 && amount == undefined && (asset.upVoteScore > 0 || asset.downVoteScore > 0)}
 			<button class="inside" on:click={() => contract.reconcile(asset.id)}>Reconcile</button>
 		{/if}
 	{/if}
