@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import Assets from './Assets.svelte';
+	import Assets from './AssetsExplorer.svelte';
 	import { connectToBlockchain } from '$lib/helpers.js';
 
 	export let projectID;

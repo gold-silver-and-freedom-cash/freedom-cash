@@ -7,8 +7,8 @@ sed -i 's/href="\//href=".\//g' docs/index.html
 sed -i 's/src="\//src=".\//g' docs/index.html
 cp -r ./docs/_app/ ./docs/app/
 sed -i 's/_app/app/g' docs/freedomWallets.html
-sed -i 's/_app/app/g' docs/freedomTreasures.html
-sed -i 's/_app/app/g' docs/freedomExchange.html
+sed -i 's/_app/app/g' docs/freedomTreasuries.html
+sed -i 's/_app/app/g' docs/freedomExchanges.html
 sed -i 's/_app/app/g' docs/freedomEnterprise.html
 sed -i 's/_app/app/g' docs/freedomInvestments.html
 sed -i 's/_app/app/g' docs/philosophy.html

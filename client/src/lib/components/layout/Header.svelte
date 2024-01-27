@@ -4,8 +4,8 @@
 	import { page } from '$app/stores';
 	const linksLeft = [
 		['/freedomWallets', 'Wallets'],
-		['/freedomTreasures', 'Treasuries'],
-		['/freedomExchange', 'Exchanges'],
+		['/freedomTreasuries', 'Treasuries'],
+		['/freedomExchanges', 'Exchanges'],
 	];
 	const linksRight = [
 		['/freedomEnterprise', 'Enterprise'],
