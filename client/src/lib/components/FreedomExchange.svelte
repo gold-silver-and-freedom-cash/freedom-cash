@@ -70,7 +70,11 @@
 			bind:value={searchTerm}
 			class="myInputField"
 			type="text"
+<<<<<<< HEAD
 			placeholder="... filter freedom exchanges ..."
+=======
+			placeholder="... filter freedom goods ..."
+>>>>>>> e94072bb834fcaeacf561c126e56bdd80c6b3fe6
 			on:keydown={onKeyDown}
 			autofocus
 		/>

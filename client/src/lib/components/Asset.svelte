@@ -78,7 +78,6 @@
 			alert(error.message);
 		}
 	}
-
 </script>
 
 <div class="card {asset.reconciled ? 'reconciled' : 'open'}">

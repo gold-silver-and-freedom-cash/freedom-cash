@@ -14,7 +14,10 @@
 	let markerIcon;
 	let markers = [];
 	let loaded = false;
+<<<<<<< HEAD
 	let markerInConstruction
+=======
+>>>>>>> e94072bb834fcaeacf561c126e56bdd80c6b3fe6
 	let newLocation = {};
 
 	onMount(async () => {
@@ -82,11 +85,14 @@
 		};
 	}
 
+<<<<<<< HEAD
 	function closeAllMarkerPopups() {
 		for (const marker of markers) {
 			marker.closePopup();
 		}
 	}
+=======
+>>>>>>> e94072bb834fcaeacf561c126e56bdd80c6b3fe6
 	function resizeMap() {
 		if (map) {
 			map.invalidateSize();
