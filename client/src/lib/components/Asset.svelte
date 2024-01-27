@@ -91,7 +91,7 @@
 		{@html replaceContentToShowClickableLinks(getTextWithoutLink(asset.text, asset.imageLink))}
 		<p><br /></p>
 
-		<Map pois={[{ lat: 47.365365, lon: 8.541248 }]} map {contract}></Map>
+		<Map pois={[{ lat: 47.365365, lon: 8.541248 }]} {contract}></Map>
 		<!-- <div class="center">
 			<img class="moniqueImage" src={asset.imageLink} alt="" />
 		</div> -->
@@ -103,7 +103,7 @@
 	<span class="score-up">Ups: {asset.upVoteScore} </span> vs.
 	<span class="score-down">Downs: {asset.downVoteScore} </span>
 
-	{#if asset.reconciled || (asset.upVoteScore === 0 && asset.downVoteScore === 0)}
+	{#if asset.reconciled}
 		<p><br /></p>
 		<input
 			bind:value={donationAmount}
@@ -155,12 +155,6 @@
 		width: 100%;
 		height: 100%;
 	}
-	/* .embedVideo {
-		margin-left: auto;
-		margin-right: auto;
-		width: 100%;
-		text-align: center;
-	} */
 	.reconciled {
 		background-color: #dddddd;
 	}

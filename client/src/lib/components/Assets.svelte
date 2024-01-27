@@ -15,7 +15,7 @@
 
 	onMount(async () => {
 		readyForDisplay = false;
-		const assets = await loadAssets(contract, projectID);
+		assets = await loadAssets(contract, projectID);
 		filteredassets = [...assets];
 		readyForDisplay = true;
 	});
@@ -24,7 +24,7 @@
 		filteredassets = [...assets];
 		if (typingActive === false) {
 			typingActive = true;
-
+			
 			setTimeout(() => {
 				const currentFilterResult = [];
 				for (const asset of filteredassets) {

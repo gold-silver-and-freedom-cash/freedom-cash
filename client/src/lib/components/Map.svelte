@@ -1,35 +1,14 @@
 <script>
 	// @ts-nocheck due to leaflet --> window is not defined... check app.html
-
-	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
 	import { projectIDFreedomExchange, votingPeriodMinLength } from '../../constants.ts';
-	// import 'leaflet/dist/leaflet.css';
-	// import * as L from 'leaflet';
-
-	export let map;
 	export let pois;
-	// export let showZoomToByLocationButton = true;
 	export let contract;
+	let map;
 	let markerIcon;
 	let markers = [];
-	let loaded = false;
-<<<<<<< HEAD
+	let readyForDisplay = false;
 	let markerInConstruction
-=======
->>>>>>> e94072bb834fcaeacf561c126e56bdd80c6b3fe6
 	let newLocation = {};
-
-	onMount(async () => {
-		loaded = true;
-	});
-	// function useCurrentLocation() {
-	// 	navigator.geolocation.getCurrentPosition((position) => {
-	// 		lat = position.coords.latitude;
-	// 		long = position.coords.longitude;
-	// 		map.setView([lat, long], 13);
-	// 	});
-	// }
 
 	function createMap(container) {
 		let newMap = L.map(container).setView([47.365365, 8.541248], 6);
@@ -77,7 +56,7 @@
 		map.on('blur', function (ev) {
 			closeAllMarkerPopups()
 		});
-
+		readyForDisplay = true
 		return {
 			destroy: () => {
 				map.remove();
@@ -85,14 +64,11 @@
 		};
 	}
 
-<<<<<<< HEAD
 	function closeAllMarkerPopups() {
 		for (const marker of markers) {
 			marker.closePopup();
 		}
 	}
-=======
->>>>>>> e94072bb834fcaeacf561c126e56bdd80c6b3fe6
 	function resizeMap() {
 		if (map) {
 			map.invalidateSize();
@@ -100,7 +76,6 @@
 	}
 
 	async function addFreedomExchange(projectID) {
-		// const hash = "0x" + hashJs.sha256().update(newAsset).digest('hex')
 		const assetID = (await contract.assetCounter()) + BigInt(1);
 		console.log(
 			`adding to ${projectID} asset ${JSON.stringify(
@@ -111,16 +86,11 @@
 	}
 </script>
 
-{#if browser && loaded}
+
 	<div style="height:400px;width:100%" use:mapAction />
-{/if}
+
 <svelte:window on:resize={resizeMap} />
 <p><br /></p>
-<!-- {#if showZoomToByLocationButton === true}
-	<button on:click={useCurrentLocation}>
-		<strong> Zoom To My Location </strong>
-	</button>
-{/if} -->
 
 {#if newLocation.lat != undefined}
 	<p><br /></p>
@@ -150,6 +120,5 @@
 	{/if}
 {/if}
 
-<!-- Here we can exchange food, gold, silver and Freedom Cash. https://mega.nz/file/4XU1wJTL#kz5I7wKr4HlguSLNkZwYczhLTiED3PVTqhWbYbI8eOs -->
 <style>
 </style>

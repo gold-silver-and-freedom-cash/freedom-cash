@@ -175,7 +175,7 @@ export const getAssetsForProjectID = async (contract, projectID) => {
     while (counter < projectAssets.length) {
         let assetRaw = await contract.assets(projectAssets[counter]);
         const asset = {
-            id: projectAssets[counter],
+            id: Number(projectAssets[counter]),
             text: assetRaw.text,
             upVoteScore: Number(ethers.formatEther(assetRaw.upVoteScore)),
             downVoteScore: Number(ethers.formatEther(assetRaw.downVoteScore)),
@@ -184,8 +184,7 @@ export const getAssetsForProjectID = async (contract, projectID) => {
             embedLink: '',
             imageLink: '',
             lat: '',
-            lon: '',
-            txt: ''
+            lon: ''
         };
         let startIndex = asset.text.indexOf('https://rumble.com/embed/');
         if (startIndex !== -1) {
@@ -291,6 +290,14 @@ export const handleChainChanged = (chainId) => {
     alert(`the chain has been changed via Metamask. So I reload.`);
     window.location.reload();
 }    
+
+export const getPOIsFromAssets = (assets) => {
+    const pois = []
+    for (const asset of assets) {
+        pois.push({lat: asset.lat, lon: asset.lon, text: asset.text})
+    }
+    return pois
+}
 
 export const shuffle = (array) => {
     let currentIndex = array.length,

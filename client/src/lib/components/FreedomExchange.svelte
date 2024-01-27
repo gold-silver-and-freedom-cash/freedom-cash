@@ -1,21 +1,18 @@
 <script>
 	import { browser } from '$app/environment';
-	import { connectToBlockchain, loadAssets } from '$lib/helpers';
+	import { connectToBlockchain, getPOIsFromAssets, loadAssets } from '$lib/helpers';
 	import { projectIDFreedomExchange } from '../../constants';
 	import Map from './Map.svelte';
 	import { onMount } from 'svelte';
+	import MapExplorer from './MapExplorer.svelte';
 
 	let publicWalletAddressOfVisitor = '';
 	let contract;
 	let provider;
 	let visitorIsConnectedViaBrowserWallet = false;
 	let visitorHasBrowserWallet = false;
-	let searchTerm = '';
-	let filteredPOIs = [];
 	let pois = [];
-	let typingActive = false;
 	let readyForDisplay = false;
-	let prepareFreedomGood = false;
 
 	onMount(async () => {
 		if (typeof window.ethereum === 'undefined') {
@@ -29,79 +26,17 @@
 			visitorIsConnectedViaBrowserWallet = true;
 			readyForDisplay = false;
 			const assets = await loadAssets(contract, projectIDFreedomExchange);
-			getPOIsFromAssets(assets)
-			filteredPOIs = [...pois];
+			pois = getPOIsFromAssets(assets);
 			readyForDisplay = true;
-
 		}
 	});
-	const onKeyDown = () => {
-		filteredPOIs = [...pois];
-		if (typingActive === false) {
-			typingActive = true;
-
-			setTimeout(() => {
-				const currentFilterResult = [];
-				for (const good of filteredPOIs) {
-					const stringifiedGood = JSON.stringify(good);
-					if (stringifiedGood.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
-						currentFilterResult.push(good);
-					}
-				}
-
-				filteredPOIs = [...currentFilterResult];
-				typingActive = false;
-			}, 1000 * 1);
-		}
-	};
-
-	function getPOIsFromAssets(assets){
-		for (const asset of assets) {
-			pois.push({lat: asset.lat, lon: asset.lon, text: asset.text})
-		}
-	}
+	
 </script>
 
 {#if readyForDisplay}
-	<div class="assets">
-		<p><br /></p>
-		<!-- svelte-ignore a11y-autofocus -->
-		<input
-			bind:value={searchTerm}
-			class="myInputField"
-			type="text"
-<<<<<<< HEAD
-			placeholder="... filter freedom exchanges ..."
-=======
-			placeholder="... filter freedom goods ..."
->>>>>>> e94072bb834fcaeacf561c126e56bdd80c6b3fe6
-			on:keydown={onKeyDown}
-			autofocus
-		/>
-
-		<p><br /></p>
-
-		<!-- svelte-ignore a11y-autofocus -->
-		{#if browser}
-			<Map pois={filteredPOIs} map {contract}></Map>
-		{/if}
-		<p><br /></p>
-		
-		<p><br /></p>
-		{#if prepareFreedomGood}
-			Please zoom into the map and click at the specific place on the map.
-		{/if}
-	</div>
+	<MapExplorer {pois} {contract} placeHolderText="... filter freedom exchanges ..."></MapExplorer>
 {/if}
 
 <style>
-	@media only screen and (min-width: 800px) {
-		/* For tablets: */
-		.assets {
-			width: 63%;
-			margin-left: auto;
-			margin-right: auto;
-			padding: 0;
-		}
-	}
+	
 </style>
