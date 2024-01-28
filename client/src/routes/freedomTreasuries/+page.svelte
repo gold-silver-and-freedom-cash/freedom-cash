@@ -6,7 +6,7 @@
 <Seo title="Freedom Treasuries" />
 
 <div class="text-center">
-	<h2>Freedom Treasuries</h2>
+	<h2>Geo Caching</h2>
 	<FreedomTreasuries></FreedomTreasuries>
 	<p><br /></p>
 </div>

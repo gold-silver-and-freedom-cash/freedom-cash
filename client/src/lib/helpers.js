@@ -209,12 +209,12 @@ export const getAssetsForProjectID = async (contract, projectID) => {
                 const rest = asset.text.substr(startIndex, asset.text.length - 1);
                 console.log(rest);
                 const endIndex = rest.indexOf(' ');
-                const megaLink = asset.text.substr(startIndex, endIndex- 1);
+                const megaLink = asset.text.substr(startIndex, endIndex - 1);
                 console.log(megaLink);
                 if (endIndex === -1) {
                     asset.imageLink = rest;
                 } else {
-                    asset.imageLink = rest.substr(0, endIndex -1);
+                    asset.imageLink = rest.substr(0, endIndex - 1);
                 }
             }
         }
@@ -289,12 +289,14 @@ export const handleChainChanged = (chainId) => {
     // await connectToBlockchain()
     alert(`the chain has been changed via Metamask. So I reload.`);
     window.location.reload();
-}    
+}
 
 export const getPOIsFromAssets = (assets) => {
     const pois = []
     for (const asset of assets) {
-        pois.push({lat: asset.lat, lon: asset.lon, text: asset.text})
+        if (asset.lat !== undefined && asset.lon !== undefined) {
+            pois.push({ lat: asset.lat, lon: asset.lon, text: asset.text })
+        }
     }
     return pois
 }

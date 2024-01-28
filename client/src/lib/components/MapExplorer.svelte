@@ -3,7 +3,10 @@
 
 	export let contract;
 	export let pois = [];
-	export let placeHolderText = "... type to filter ...";
+	export let assetType;
+	export let projectID;
+	export let filterRequired = false;
+	export let placeHolderText = '... type to filter ...';
 
 	let searchTerm = '';
 	let filteredPOIs = pois;
@@ -30,27 +33,26 @@
 			}, 1000 * 1);
 		}
 	};
-	
 </script>
 
 <div class="assets">
 	<p><br /></p>
-	<!-- svelte-ignore a11y-autofocus -->
-	<input
-		bind:value={searchTerm}
-		class="myInputField"
-		type="text"
-		placeholder={placeHolderText}
-		on:keydown={onKeyDown}
-		autofocus
-	/>
+	{#if filterRequired}
+		<!-- svelte-ignore a11y-autofocus -->
+		<input
+			bind:value={searchTerm}
+			class="myInputField"
+			type="text"
+			placeholder={placeHolderText}
+			on:keydown={onKeyDown}
+			autofocus
+		/>
 
-	<p><br /></p>
+		<p><br /></p>
+	{/if}
 
-	<Map pois={filteredPOIs} {contract}></Map>
-	<p><br /></p>
+	<Map {projectID} {assetType} pois={filteredPOIs} {contract}></Map>
 
-	<p><br /></p>
 	{#if prepareFreedomGood}
 		Please zoom into the map and click at the specific place on the map.
 	{/if}

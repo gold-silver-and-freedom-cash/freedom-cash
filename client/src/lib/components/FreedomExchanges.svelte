@@ -34,7 +34,7 @@
 </script>
 
 {#if readyForDisplay}
-	<MapExplorer {pois} {contract} placeHolderText="... filter freedom exchanges ..."></MapExplorer>
+	<MapExplorer projectID={projectIDFreedomExchange} assetType="exchange" filterRequired={true} {pois} {contract} placeHolderText="... filter freedom exchanges ..."></MapExplorer>
 {/if}
 
 <style>

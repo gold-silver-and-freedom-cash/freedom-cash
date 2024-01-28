@@ -3,11 +3,13 @@
 	import { projectIDFreedomExchange, votingPeriodMinLength } from '../../constants.ts';
 	export let pois;
 	export let contract;
+	export let assetType = "location";
+	export let projectID;
 	let map;
 	let markerIcon;
 	let markers = [];
 	let readyForDisplay = false;
-	let markerInConstruction
+	let markerInConstruction;
 	let newLocation = {};
 
 	function createMap(container) {
@@ -42,21 +44,23 @@
 			markers.push(newMarker);
 		}
 		map.on('click', function (e) {
-			closeAllMarkerPopups()
+			closeAllMarkerPopups();
 			newLocation.lat = Math.round((e.latlng.lat + Number.EPSILON) * 1000000) / 1000000;
 			newLocation.lon = Math.round((e.latlng.lng + Number.EPSILON) * 1000000) / 1000000;
-			if(markerInConstruction != undefined){
-				map.removeLayer(markerInConstruction)
+			if (markerInConstruction != undefined) {
+				map.removeLayer(markerInConstruction);
 			}
-			markerInConstruction = L.marker([newLocation.lat, newLocation.lon], { icon: markerIcon }).addTo(map);
+			markerInConstruction = L.marker([newLocation.lat, newLocation.lon], {
+				icon: markerIcon
+			}).addTo(map);
 		});
 		map.on('dragstart', function (ev) {
-			closeAllMarkerPopups()
+			closeAllMarkerPopups();
 		});
 		map.on('blur', function (ev) {
-			closeAllMarkerPopups()
+			closeAllMarkerPopups();
 		});
-		readyForDisplay = true
+		readyForDisplay = true;
 		return {
 			destroy: () => {
 				map.remove();
@@ -75,7 +79,7 @@
 		}
 	}
 
-	async function addFreedomExchange(projectID) {
+	async function addLocation(projectID) {
 		const assetID = (await contract.assetCounter()) + BigInt(1);
 		console.log(
 			`adding to ${projectID} asset ${JSON.stringify(
@@ -86,15 +90,14 @@
 	}
 </script>
 
-
-	<div style="height:400px;width:100%" use:mapAction />
+<div style="height:400px;width:100%" use:mapAction />
 
 <svelte:window on:resize={resizeMap} />
 <p><br /></p>
 
 {#if newLocation.lat != undefined}
 	<p><br /></p>
-	The following location will be added
+	The following {assetType} will be added
 	<p><br /></p>
 	Latitude: {newLocation.lat}
 	<br />
@@ -106,15 +109,23 @@
 		Description: {newLocation.txt}
 	{/if}
 	<p><br /></p>
+
 	<input
 		bind:value={newLocation.txt}
 		class="myInputField"
 		type="text"
 		placeholder="... describe this place ..."
 	/>
+	<p><br></p>
+	<div class="center">
+		<img
+			src="https://github.com/monique-baumann/freedom-cash/assets/145258627/97bc4bbf-2b58-4806-92eb-d6517f08685e"
+			alt="example"
+		/>
+	</div>	
 	{#if newLocation.txt != undefined}
 		<p><br /></p>
-		<button class="inside" on:click={() => addFreedomExchange(projectIDFreedomExchange)}
+		<button class="inside" on:click={() => addLocation(projectID)}
 			>Add Freedom Exchange</button
 		>
 	{/if}

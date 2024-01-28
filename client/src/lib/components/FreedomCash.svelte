@@ -69,7 +69,7 @@
 	</div>
 	{#if showBets}
 		<p><br /></p>
-		<FreedomBets {projectID}></FreedomBets>
+		<FreedomBets></FreedomBets>
 	{/if}
 
 	<p><br /><br /></p>

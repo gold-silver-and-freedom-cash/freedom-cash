@@ -1,7 +1,11 @@
 <script>
 	import { ethers } from 'ethers';
 	import { earthCoin, earthCoinABI, freedomCash, freedomCashABI } from '../../constants';
-	import { getPOIsFromAssets, getTextWithoutLink, replaceContentToShowClickableLinks } from '$lib/helpers';
+	import {
+		getPOIsFromAssets,
+		getTextWithoutLink,
+		replaceContentToShowClickableLinks
+	} from '$lib/helpers';
 	import Map from './Map.svelte';
 	export let asset;
 	export let contract;
@@ -91,12 +95,15 @@
 		{@html replaceContentToShowClickableLinks(getTextWithoutLink(asset.text, asset.imageLink))}
 		<p><br /></p>
 
-		<Map pois={getPOIsFromAssets([asset])} {contract}></Map>
+		<Map projectID={asset.projectID} pois={getPOIsFromAssets([asset])} {contract}></Map>
 		<!-- <div class="center">
 			<img class="moniqueImage" src={asset.imageLink} alt="" />
 		</div> -->
 	{:else}
 		{@html replaceContentToShowClickableLinks(asset.text)}
+		{#if getPOIsFromAssets([asset]).length > 0}
+			<Map projectID={asset.projectID} pois={getPOIsFromAssets([asset])} {contract}></Map>
+		{/if}
 	{/if}
 
 	<p><br /></p>

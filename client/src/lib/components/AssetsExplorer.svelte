@@ -1,21 +1,19 @@
 <script>
 	import { onMount } from 'svelte';
 	import Asset from './Asset.svelte';
-	import { loadAssets } from '$lib/helpers';
 	export let contract;
 	export let publicWalletAddressOfVisitor;
 	export let provider;
-	export let projectID;
+	export let placeHolderText = "... filter ...";
+	export let assets = [];
 	let searchTerm = '';
 
-	let assets = [];
 	let filteredassets = [];
 	let readyForDisplay = false;
 	let typingActive = false;
 
 	onMount(async () => {
 		readyForDisplay = false;
-		assets = await loadAssets(contract, projectID);
 		filteredassets = [...assets];
 		readyForDisplay = true;
 	});
@@ -24,7 +22,7 @@
 		filteredassets = [...assets];
 		if (typingActive === false) {
 			typingActive = true;
-			
+
 			setTimeout(() => {
 				const currentFilterResult = [];
 				for (const asset of filteredassets) {
@@ -40,18 +38,19 @@
 	};
 </script>
 
-<div class="assets">
-	<!-- svelte-ignore a11y-autofocus -->
-	<input
-		bind:value={searchTerm}
-		class="myInputField"
-		type="text"
-		placeholder="... filter ..."
-		on:keydown={onKeyDown}
-		autofocus
-	/>
+<p><br><br></p>
+<!-- svelte-ignore a11y-autofocus -->
+<input
+	bind:value={searchTerm}
+	class="myInputField"
+	type="text"
+	placeholder={placeHolderText}
+	on:keydown={onKeyDown}
+	autofocus
+/>
 
-	<p><br /></p>
+<p><br /></p>
+<div class="assets">
 	{#if readyForDisplay}
 		{#each filteredassets as asset, index}
 			<Asset {asset} {contract} {provider} {publicWalletAddressOfVisitor}></Asset>

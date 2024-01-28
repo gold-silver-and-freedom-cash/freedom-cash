@@ -1,14 +1,13 @@
 <script>
 	import { onMount } from 'svelte';
-	import Assets from './AssetsExplorer.svelte';
-	import { connectToBlockchain } from '$lib/helpers.js';
-
-	export let projectID;
+	import AssetsExplorer from './AssetsExplorer.svelte';
+	import { connectToBlockchain, loadAssets } from '$lib/helpers.js';
 
 	let publicWalletAddressOfVisitor = '';
 	let visitorIsConnectedViaBrowserWallet = false;
 	let visitorHasBrowserWallet = false;
 	let contract;
+	let assets = []
 
 	let provider;
 	let claimableRewards = 0;
@@ -23,6 +22,7 @@
 			contract = connectionData.fBContract;
 			publicWalletAddressOfVisitor = connectionData.publicWalletAddressOfVisitor;
 			claimableRewards = await contract.getClaimableRewards(publicWalletAddressOfVisitor);
+			assets = await loadAssets(contract, 0);
 			visitorIsConnectedViaBrowserWallet = true;
 		}
 	});
@@ -52,8 +52,8 @@
 			>
 				Enter Freedom
 			</button>
-		{:else}
-			<Assets {contract} {publicWalletAddressOfVisitor} {provider} {projectID}></Assets>
+		{:else if visitorIsConnectedViaBrowserWallet}
+			<AssetsExplorer {assets} {contract} {publicWalletAddressOfVisitor} {provider}></AssetsExplorer>
 			{#if claimableRewards > 0}
 				<p><br /></p>
 				<button class="button inside" on:click={() => claimRewards()}> Claim Rewards </button>
