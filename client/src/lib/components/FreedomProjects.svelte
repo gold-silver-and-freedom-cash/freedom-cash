@@ -60,9 +60,11 @@
 		}
 		const projectCounter = await contract.projectCounter();
 		let counter = 0;
+		// alert(await contract.getAddress())
 		while (counter < projectCounter) {
 			counter++;
-			projects.push(await contract.projects(counter));
+			const project = await contract.projects(counter)
+			projects.push(project);
 		}
 		projectsLoaded = true;
 	}
@@ -86,7 +88,6 @@
 					<th>ID</th>
 					<th>URL</th>
 				</tr>
-
 				{#each projects as project, index}
 					<tr>
 						<td

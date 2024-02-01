@@ -10,7 +10,6 @@
 	let publicWalletAddressOfVisitor = '';
 	let visitorIsConnectedViaBrowserWallet = false;
 	let visitorHasBrowserWallet = false;
-	let projectID = 0;
 	let contract;
 	let showDetails;
 	let invest;

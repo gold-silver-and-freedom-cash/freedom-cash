@@ -1,7 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
 	import AssetsExplorer from './AssetsExplorer.svelte';
-	import { connectToBlockchain, loadAssets } from '$lib/helpers.js';
+	import { connectToBlockchain } from '$lib/helpers.js';
+	import { baseURLScan, freedomBets } from '../../constants';
 
 	let publicWalletAddressOfVisitor = '';
 	let visitorIsConnectedViaBrowserWallet = false;
@@ -22,7 +23,7 @@
 			contract = connectionData.fBContract;
 			publicWalletAddressOfVisitor = connectionData.publicWalletAddressOfVisitor;
 			claimableRewards = await contract.getClaimableRewards(publicWalletAddressOfVisitor);
-			assets = await loadAssets(contract, 0);
+			// assets = await loadAssets(contract, 0);
 			visitorIsConnectedViaBrowserWallet = true;
 		}
 	});
@@ -34,7 +35,9 @@
 <section class="text-center">
 	<div class="content">
 		<p><br /></p>
-		Freedom Bets is an incentive system for truth, respect & direct democracy.
+		<a href="{baseURLScan}token/{freedomBets}#code" target="_blank">Freedom Bets</a>,
+		is an incentive system for truth, respect & 
+		<a href="https://otherparty.co.uk" target="_blank">direct democracy</a>,
 		<p><br /></p>
 
 		{#if !visitorHasBrowserWallet}

@@ -1,12 +1,12 @@
 <script>
 	import { ethers } from 'ethers';
-	import { earthCoin, earthCoinABI, freedomCash, freedomCashABI } from '../../constants';
+	import { earthCoinABI, freedomCash, freedomCashABI } from '../../constants';
 	import {
 		getPOIsFromAssets,
 		getTextWithoutLink,
 		replaceContentToShowClickableLinks
 	} from '$lib/helpers';
-	import Map from './Map.svelte';
+	import Map from './MapOfExchanges.svelte';
 	export let asset;
 	export let contract;
 	export let provider;
@@ -53,34 +53,34 @@
 		}
 	}
 	async function donate(assetID) {
-		const signer = await provider.getSigner();
-		const eCContract = new ethers.Contract(earthCoin, earthCoinABI, signer);
-		const amountToBeDonatedInWei = ethers.parseEther(donationAmount.toString());
-		const buyPrice = await eCContract.getBuyPrice(amountToBeDonatedInWei);
-		const cost = BigInt(donationAmount) * buyPrice;
-		const ethInWallet = BigInt(await provider.getBalance(publicWalletAddressOfVisitor));
-		const donationReceiver = await contract.assetCreators(assetID);
-		try {
-			const estimatedGas = await eCContract.donate.estimateGas(
-				donationReceiver,
-				amountToBeDonatedInWei,
-				buyPrice,
-				{
-					value: BigInt(cost)
-				}
-			);
-			const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
-			if (ethInWallet < cost + BigInt(estimatedGasCost)) {
-				alert('you might enter a smaller amount');
-			} else {
-				console.log(`donating to ${donationReceiver} ${amountToBeDonatedInWei} ${buyPrice}`);
-				await eCContract.donate(donationReceiver, amountToBeDonatedInWei, buyPrice, {
-					value: BigInt(cost)
-				});
-			}
-		} catch (error) {
-			alert(error.message);
-		}
+		// const signer = await provider.getSigner();
+		// // const eCContract = new ethers.Contract(earthCoin, earthCoinABI, signer);
+		// const amountToBeDonatedInWei = ethers.parseEther(donationAmount.toString());
+		// // const buyPrice = await eCContract.getBuyPrice(amountToBeDonatedInWei);
+		// const cost = BigInt(donationAmount) * buyPrice;
+		// const ethInWallet = BigInt(await provider.getBalance(publicWalletAddressOfVisitor));
+		// const donationReceiver = await contract.assetCreators(assetID);
+		// try {
+		// 	const estimatedGas = await eCContract.donate.estimateGas(
+		// 		donationReceiver,
+		// 		amountToBeDonatedInWei,
+		// 		buyPrice,
+		// 		{
+		// 			value: BigInt(cost)
+		// 		}
+		// 	);
+		// 	const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
+		// 	if (ethInWallet < cost + BigInt(estimatedGasCost)) {
+		// 		alert('you might enter a smaller amount');
+		// 	} else {
+		// 		console.log(`donating to ${donationReceiver} ${amountToBeDonatedInWei} ${buyPrice}`);
+		// 		await eCContract.donate(donationReceiver, amountToBeDonatedInWei, buyPrice, {
+		// 			value: BigInt(cost)
+		// 		});
+		// 	}
+		// } catch (error) {
+		// 	alert(error.message);
+		// }
 	}
 </script>
 
@@ -102,6 +102,7 @@
 	{:else}
 		{@html replaceContentToShowClickableLinks(asset.text)}
 		{#if getPOIsFromAssets([asset]).length > 0}
+			<p><br></p>
 			<Map projectID={asset.projectID} pois={getPOIsFromAssets([asset])} {contract}></Map>
 		{/if}
 	{/if}

@@ -1,22 +1,30 @@
 <script>
 	import { onMount } from 'svelte';
-	import { projectIDGeoCaching, targetChainName, votingPeriodMinLength } from '../../constants.ts';
-	import { connectToBlockchain, getPOIsFromAssets, loadAssets } from '$lib/helpers.js';
-	import AssetsExplorer from './AssetsExplorer.svelte';
-	import MapExplorer from './MapExplorer.svelte';
+	import { hints, hintsABI } from '../../constants.ts';
+	import { connectToBlockchain } from '$lib/helpers.js';
+	import { ethers } from 'ethers';
+	import GeoCache from './GeoCache.svelte';
+	import MapOfGeoCaches from './MapOfGeoCaches.svelte';
 
 	let visitorIsConnectedViaBrowserWallet = false;
 	let visitorHasBrowserWallet = false;
 	let publicWalletAddressOfVisitor = '';
-	let contract;
 	let provider;
-	let newTreasure = '';
-	let message = '';
-	let assets = [];
 	let pois = [];
-	let visitorInformed = true;
-	let prepareNewTreasure = false;
-
+	let dataLoaded = false;
+	async function getFreedomCaches(contract) {
+		const numberOfPois = await contract.counter();
+		let counter = 0;
+		while (counter < numberOfPois) {
+			counter++;
+			let poiRaw = await contract.freedomCaches(counter);
+			const location = ethers.decodeBytes32String(poiRaw[0]);
+			const guestBookEntry = ethers.decodeBytes32String(poiRaw[1]);
+			const splitted = location.split('œ');
+			const poi = { lat: splitted[0], lon: splitted[1], text: guestBookEntry };
+			pois.push(poi);
+		}
+	}
 	onMount(async () => {
 		if (typeof window.ethereum === 'undefined') {
 			visitorHasBrowserWallet = false;
@@ -24,70 +32,34 @@
 			visitorHasBrowserWallet = true;
 			const connectionData = await connectToBlockchain();
 			provider = connectionData.provider;
-			contract = connectionData.fBContract;
 			publicWalletAddressOfVisitor = connectionData.publicWalletAddressOfVisitor;
-			assets = await loadAssets(contract, projectIDGeoCaching);
-			pois = getPOIsFromAssets(assets);
+			const signer = await provider.getSigner();
+			const contract = new ethers.Contract(hints, hintsABI, signer);
+			await getFreedomCaches(contract);
+			dataLoaded = true;
 			visitorIsConnectedViaBrowserWallet = true;
 		}
 	});
-
-	async function addTreasure(projectID) {
-		// const hash = "0x" + hashJs.sha256().update(newAsset).digest('hex')
-		const assetID = (await contract.assetCounter()) + BigInt(1);
-		console.log(`adding to ${projectID} asset ${newTreasure} ${assetID} ${votingPeriodMinLength}`);
-		await contract.addAsset(projectID, newTreasure, assetID, votingPeriodMinLength);
-	}
 </script>
 
 {#if visitorIsConnectedViaBrowserWallet}
-	Once you have created and printed a wallet, you can hide it at any beautiful place.
-	<p><br /></p>
-	After that you can share a link to a photo or video of that place.
-	<p><br /></p>
-	<MapExplorer projectID={projectIDGeoCaching} assetType="treasury" filterRequired={false} {pois} {contract} placeHolderText="... filter freedom treasuries ..."></MapExplorer>
-
 	<div class="content">
-		<AssetsExplorer placeHolderText="... filter treasuries ..." {contract} {publicWalletAddressOfVisitor} {provider} {assets}></AssetsExplorer>
+		Once you have created and printed a wallet, you can hide it at any beautiful place.
+		<p><br /></p>
+		After that you can share a link to a photo or video of that place.
+		<p><br /></p>
+		{#if dataLoaded}
+			<MapOfGeoCaches {pois}></MapOfGeoCaches>
+		{/if}
+
+		<p><br /><br /></p>
+		<div class="assets">
+			{#each pois as poi, index}
+				<GeoCache {poi}></GeoCache>
+			{/each}
+		</div>
 
 		<p><br /></p>
-		{#if visitorInformed}
-			<!-- <button
-				on:click={() => {
-					prepareNewTreasure = !prepareNewTreasure;
-				}}>Add Treasury</button
-			>
-			{#if prepareNewTreasure}
-				<p><br /></p>
-				<div class="center">
-					<img
-						src="https://github.com/monique-baumann/freedom-cash/assets/145258627/97bc4bbf-2b58-4806-92eb-d6517f08685e"
-						alt="example"
-					/>
-				</div>
-				<p><br /></p>
-				<input
-					bind:value={newTreasure}
-					class="myInputField"
-					type="text"
-					placeholder="... add new treasury ..."
-				/>
-				<p><br /></p>
-				{#if newTreasure}
-					<button class="inside" on:click={() => addTreasure(projectIDGeoCaching)}
-						>Add Treasury</button
-					>
-				{/if}
-			{/if} -->
-		{:else}
-			<!-- <FeedbackToVisitor
-		smartContractAddress={freedomBets}
-		{message}
-		on:clickedOK={() => {
-			visitorInformed = true;
-		}}
-	></FeedbackToVisitor> -->
-		{/if}
 	</div>
 {/if}
 <div class="center">
@@ -114,9 +86,8 @@ If we do not own freedom, we might own nothing at all.
 			text-align: center;
 		}
 	}
-
-	.moniqueImage {
-		width: 450px;
-		border-radius: 9%;
+	.assets {
+		max-height: 630px;
+		overflow-y: scroll;
 	}
 </style>

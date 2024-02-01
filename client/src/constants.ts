@@ -1,24 +1,92 @@
 
-export const freedomCash = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
-export const freedomBets = '0xEf1616578068C0Af55370B0C262e84d912367Aef'; 
-export const earthCoin = '0xC2aF1DA8A1007Bf414e820d5Ea77Bba0cc9086bE'; 
-export const targetChainId = '0x44d'; // == 1101 in decimal = Polygon ZKEVM
-export const targetChainName = 'Polygon ZKEVM';
-export const baseURLScan = "https://zkevm.polygonscan.com/"
-// export const freedomCash = '0x1E7A208810366D0562c7Ba93F883daEedBf31410'; // testnet
-// export const freedomBets = '0x29932185fB7450d8320a849A2CCeB8c016535Ffe'; // testnet
+// export const freedomCash = '0xa1e7bB978a28A30B34995c57d5ba0B778E90033B';
+// export const freedomBets = '0xEf1616578068C0Af55370B0C262e84d912367Aef'; 
+// export const targetChainId = '0x44d'; // == 1101 in decimal = Polygon ZKEVM
+// export const targetChainName = 'Polygon ZKEVM';
+// export const baseURLScan = "https://zkevm.polygonscan.com/"
+export const freedomCash = '0xe728399d74d63E3c8C584625feE369630969bB70'; // testnet
+export const freedomBets = '0xafA72B56cACd9D04158D9832B1f71942E081a586'; // testnet
+export const hints = '0x78f372bcDdc5602D1c68949d50a1B09B1D9350Bf'; // testnet
 // export const earthCoin = '0xC2aF1DA8A1007Bf414e820d5Ea77Bba0cc9086bE'; // testnet
-// export const targetChainId = '0x370e'; // == 14094 in decimal = Builbear
-// export const targetChainName = 'BuildBear';
-// export const baseURLScan = "https://explorer.buildbear.io/irrelevant-spiderwoman-c3f93058/transactions"
+export const targetChainId = '0x37B4'; // testnet
+export const targetChainName = 'BuildBear';
+export const baseURLScan = "https://explorer.buildbear.io/"
 
 export const projectIDGeoCaching = 1
 export const projectIDFreedomExchange = 2
 export const projectIDFreedomEnterprise = 3
-export const votingPeriodMinLength = 180
+export const votingPeriodMinLength = BigInt(180)
 
 
 // export const freedomChats = '0x97f9723BCb41C60bB4f6e01bf59B6Ce8B2364466';
+export const hintsABI = [
+	{
+		"inputs": [],
+		"name": "SupplyCorrectID",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "location",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "guestBookEntry",
+				"type": "bytes32"
+			}
+		],
+		"name": "add",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "counter",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "freedomCaches",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "location",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "guestBookEntry",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+
 
 export const earthCoinABI = [
 	{
@@ -408,21 +476,11 @@ export const freedomBetsABI = [
 		"type": "error"
 	},
 	{
-		"inputs": [],
-		"name": "YouCanOnlyAddAssetsToYourOwnProjectIDs",
-		"type": "error"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "uint256",
 				"name": "projectID",
 				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "text",
-				"type": "string"
 			},
 			{
 				"internalType": "uint256",
@@ -502,31 +560,12 @@ export const freedomBetsABI = [
 				"type": "uint256"
 			}
 		],
-		"name": "assetCreators",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
 		"name": "assets",
 		"outputs": [
 			{
-				"internalType": "string",
-				"name": "text",
-				"type": "string"
+				"internalType": "address payable",
+				"name": "from",
+				"type": "address"
 			},
 			{
 				"internalType": "uint256",
@@ -713,25 +752,6 @@ export const freedomBetsABI = [
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "projectOwners",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
 			}
 		],
 		"stateMutability": "view",

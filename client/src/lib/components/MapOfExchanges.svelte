@@ -1,17 +1,24 @@
 <script>
 	// @ts-nocheck due to leaflet --> window is not defined... check app.html
-	import { projectIDFreedomExchange, votingPeriodMinLength } from '../../constants.ts';
-	export let pois;
-	export let contract;
-	export let assetType = "location";
-	export let projectID;
+	import { onMount } from 'svelte';
+	import { hints, hintsABI } from '../../constants.ts';
+	import { ethers } from 'ethers';
+	import FeedbackToVisitor from './FeedbackToVisitor.svelte';
+	
+	export let pois = [];
+	export let width = 100;
+	export let height = 400;
+	let visitorInformed = true;
 	let map;
 	let markerIcon;
 	let markers = [];
 	let readyForDisplay = false;
+	let dataLoaded = false;
 	let markerInConstruction;
-	let newLocation = {};
-
+	let newHint = {};
+	onMount(async () => {
+		// alert(pois)
+	});
 	function createMap(container) {
 		let newMap = L.map(container).setView([47.365365, 8.541248], 6);
 		markerIcon = L.icon({
@@ -28,12 +35,14 @@
 
 		return newMap;
 	}
-
 	function mapAction(container) {
 		map = createMap(container);
+
 		for (const poi of pois) {
 			const newMarker = L.marker([poi.lat, poi.lon], { icon: markerIcon })
-				.bindPopup(poi.text)
+				.bindPopup(
+					`<a href="https://rumble.com/embed/${poi.text}" target="_blank">https://rumble.com/embed/${poi.text}</a>`
+				)
 				.addTo(map);
 			newMarker.on('mouseover', function (ev) {
 				newMarker.openPopup();
@@ -45,12 +54,12 @@
 		}
 		map.on('click', function (e) {
 			closeAllMarkerPopups();
-			newLocation.lat = Math.round((e.latlng.lat + Number.EPSILON) * 1000000) / 1000000;
-			newLocation.lon = Math.round((e.latlng.lng + Number.EPSILON) * 1000000) / 1000000;
+			newHint.lat = Math.round((e.latlng.lat + Number.EPSILON) * 1000000) / 1000000;
+			newHint.lon = Math.round((e.latlng.lng + Number.EPSILON) * 1000000) / 1000000;
 			if (markerInConstruction != undefined) {
 				map.removeLayer(markerInConstruction);
 			}
-			markerInConstruction = L.marker([newLocation.lat, newLocation.lon], {
+			markerInConstruction = L.marker([newHint.lat, newHint.lon], {
 				icon: markerIcon
 			}).addTo(map);
 		});
@@ -67,7 +76,6 @@
 			}
 		};
 	}
-
 	function closeAllMarkerPopups() {
 		for (const marker of markers) {
 			marker.closePopup();
@@ -79,55 +87,62 @@
 		}
 	}
 
-	async function addLocation(projectID) {
-		const assetID = (await contract.assetCounter()) + BigInt(1);
-		console.log(
-			`adding to ${projectID} asset ${JSON.stringify(
-				newLocation
-			)} ${assetID} ${votingPeriodMinLength}`
-		);
-		await contract.addAsset(projectID, JSON.stringify(newLocation), assetID, votingPeriodMinLength);
+	async function addHint() {
+		const provider = new ethers.BrowserProvider(window.ethereum);
+		const signer = await provider.getSigner();
+		const contract = new ethers.Contract(hints, hintsABI, signer);
+		const id = (await contract.counter()) + BigInt(1);
+		const part1 = `${newHint.lat}œ${newHint.lon}`;
+		if (newHint.txt.indexOf('https://rumble.com/embed/') === 0) {
+			const part2 = `${newHint.txt.substr(25, newHint.txt.length - 1)}`;
+			await contract.add(id, ethers.encodeBytes32String(part1), ethers.encodeBytes32String(part2));
+			visitorInformed = false
+		} else {
+			alert(
+				'you need to enter a rumble.com embed url like \nhttps://rumble.com/embed/v47pp4q/?pub=3blg3u'
+			);
+			newHint.txt = ""
+		}
 	}
 </script>
 
-<div style="height:400px;width:100%" use:mapAction />
+<div style="height:{height}px;width:${width}%" use:mapAction />
 
 <svelte:window on:resize={resizeMap} />
 <p><br /></p>
 
-{#if newLocation.lat != undefined}
+{#if newHint.lat != undefined}
 	<p><br /></p>
-	The following {assetType} will be added
+	The following GeoCache will be added
 	<p><br /></p>
-	Latitude: {newLocation.lat}
+	Latitude: {newHint.lat}
 	<br />
-	Longitute: {newLocation.lon}
+	Longitute: {newHint.lon}
 	<br />
-	{#if newLocation.txt == undefined}
-		Description: ""
+	{#if newHint.txt == undefined}
+		Embed Link from Rumble: ""
 	{:else}
-		Description: {newLocation.txt}
+		Embed Link from Rumble: {newHint.txt}
 	{/if}
 	<p><br /></p>
-
-	<input
-		bind:value={newLocation.txt}
-		class="myInputField"
-		type="text"
-		placeholder="... describe this place ..."
-	/>
-	<p><br></p>
-	<div class="center">
-		<img
-			src="https://github.com/monique-baumann/freedom-cash/assets/145258627/97bc4bbf-2b58-4806-92eb-d6517f08685e"
-			alt="example"
+	{#if visitorInformed}
+		<input
+			bind:value={newHint.txt}
+			class="myInputField"
+			type="text"
+			placeholder="... paste embed link from rumble.com ..."
 		/>
-	</div>	
-	{#if newLocation.txt != undefined}
-		<p><br /></p>
-		<button class="inside" on:click={() => addLocation(projectID)}
-			>Add Freedom Exchange</button
-		>
+		{#if newHint.txt != undefined}
+			<p><br /></p>
+			<button class="inside" on:click={() => addHint()}>Add</button>
+		{/if}
+	{:else}
+		<FeedbackToVisitor
+			smartContractAddress={hints}
+			on:clickedOK={() => {
+				visitorInformed = true;
+			}}
+		></FeedbackToVisitor>
 	{/if}
 {/if}
 
