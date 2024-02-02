@@ -1,11 +1,12 @@
 <script>
 	// @ts-nocheck due to leaflet --> window is not defined... check app.html
 	import { onMount } from 'svelte';
-	import { hints, hintsABI } from '../../constants.ts';
+	import { hints } from '../../constants.ts';
 	import { ethers } from 'ethers';
 	import FeedbackToVisitor from './FeedbackToVisitor.svelte';
 	
 	export let pois = [];
+	export let contract;
 	export let width = 100;
 	export let height = 400;
 	let visitorInformed = true;
@@ -88,9 +89,6 @@
 	}
 
 	async function addHint() {
-		const provider = new ethers.BrowserProvider(window.ethereum);
-		const signer = await provider.getSigner();
-		const contract = new ethers.Contract(hints, hintsABI, signer);
 		const id = (await contract.counter()) + BigInt(1);
 		const part1 = `${newHint.lat}œ${newHint.lon}`;
 		if (newHint.txt.indexOf('https://rumble.com/embed/') === 0) {

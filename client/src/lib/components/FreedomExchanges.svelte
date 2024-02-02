@@ -1,27 +1,29 @@
 <script>
 	import { onMount } from 'svelte';
-	import { hints, hintsABI } from '../../constants.ts';
+	import { exchanges, exchangesABI } from '../../constants.ts';
 	import { connectToBlockchain } from '$lib/helpers.js';
 	import { ethers } from 'ethers';
-	import GeoCache from './GeoCache.svelte';
 	import MapOfExchanges from './MapOfExchanges.svelte';
+	import Exchange from './Exchange.svelte';
 
 	let visitorIsConnectedViaBrowserWallet = false;
 	let visitorHasBrowserWallet = false;
 	let publicWalletAddressOfVisitor = '';
 	let provider;
+	let contract
 	let pois = [];
 	let dataLoaded = false;
-	async function getFreedomCaches(contract) {
+	let showMap = false;
+	async function getExchanges(contract) {
 		const numberOfPois = await contract.counter();
 		let counter = 0;
 		while (counter < numberOfPois) {
 			counter++;
 			let poiRaw = await contract.freedomCaches(counter);
 			const location = ethers.decodeBytes32String(poiRaw[0]);
-			const guestBookEntry = ethers.decodeBytes32String(poiRaw[1]);
 			const splitted = location.split('œ');
-			const poi = { lat: splitted[0], lon: splitted[1], text: guestBookEntry };
+			const description = poiRaw[1];
+			const poi = { lat: splitted[0], lon: splitted[1], text: description };
 			pois.push(poi);
 		}
 	}
@@ -34,8 +36,8 @@
 			provider = connectionData.provider;
 			publicWalletAddressOfVisitor = connectionData.publicWalletAddressOfVisitor;
 			const signer = await provider.getSigner();
-			const contract = new ethers.Contract(hints, hintsABI, signer);
-			await getFreedomCaches(contract);
+			contract = new ethers.Contract(exchanges, exchangesABI, signer);
+			await getExchanges(contract);
 			dataLoaded = true;
 			visitorIsConnectedViaBrowserWallet = true;
 		}
@@ -44,14 +46,16 @@
 
 {#if visitorIsConnectedViaBrowserWallet}
 	<div class="content">
-		{#if dataLoaded}
-			<MapOfExchanges {pois}></MapOfExchanges>
+		<button on:click={() => showMap = !showMap} >Show Overview</button>
+		{#if dataLoaded && showMap}
+			<p><br></p>
+			<MapOfExchanges {pois} {contract}></MapOfExchanges>
 		{/if}
 
 		<p><br /><br /></p>
 		<div class="assets">
 			{#each pois as poi, index}
-				<GeoCache {poi}></GeoCache>
+				<Exchange {poi} {contract} {publicWalletAddressOfVisitor} {provider}></Exchange>
 			{/each}
 		</div>
 

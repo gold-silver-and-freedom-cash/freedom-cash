@@ -1,11 +1,13 @@
 <script>
 	// @ts-nocheck due to leaflet --> window is not defined... check app.html
 	import { onMount } from 'svelte';
-	import { hints, hintsABI } from '../../constants.ts';
+	import { exchanges } from '../../constants.ts';
 	import { ethers } from 'ethers';
 	import FeedbackToVisitor from './FeedbackToVisitor.svelte';
-	
+	import { replaceContentToShowClickableLinks } from '$lib/helpers.js';
+
 	export let pois = [];
+	export let contract;
 	export let width = 100;
 	export let height = 400;
 	let visitorInformed = true;
@@ -13,7 +15,6 @@
 	let markerIcon;
 	let markers = [];
 	let readyForDisplay = false;
-	let dataLoaded = false;
 	let markerInConstruction;
 	let newHint = {};
 	onMount(async () => {
@@ -40,9 +41,7 @@
 
 		for (const poi of pois) {
 			const newMarker = L.marker([poi.lat, poi.lon], { icon: markerIcon })
-				.bindPopup(
-					`<a href="https://rumble.com/embed/${poi.text}" target="_blank">https://rumble.com/embed/${poi.text}</a>`
-				)
+				.bindPopup(replaceContentToShowClickableLinks(poi.text))
 				.addTo(map);
 			newMarker.on('mouseover', function (ev) {
 				newMarker.openPopup();
@@ -87,22 +86,11 @@
 		}
 	}
 
-	async function addHint() {
-		const provider = new ethers.BrowserProvider(window.ethereum);
-		const signer = await provider.getSigner();
-		const contract = new ethers.Contract(hints, hintsABI, signer);
+	async function addExchange() {
 		const id = (await contract.counter()) + BigInt(1);
-		const part1 = `${newHint.lat}œ${newHint.lon}`;
-		if (newHint.txt.indexOf('https://rumble.com/embed/') === 0) {
-			const part2 = `${newHint.txt.substr(25, newHint.txt.length - 1)}`;
-			await contract.add(id, ethers.encodeBytes32String(part1), ethers.encodeBytes32String(part2));
-			visitorInformed = false
-		} else {
-			alert(
-				'you need to enter a rumble.com embed url like \nhttps://rumble.com/embed/v47pp4q/?pub=3blg3u'
-			);
-			newHint.txt = ""
-		}
+		const location = `${newHint.lat}œ${newHint.lon}`;
+		await contract.add(id, ethers.encodeBytes32String(location), newHint.txt);
+		visitorInformed = false;
 	}
 </script>
 
@@ -113,16 +101,16 @@
 
 {#if newHint.lat != undefined}
 	<p><br /></p>
-	The following GeoCache will be added
+	The following Freedom Exchange will be added
 	<p><br /></p>
 	Latitude: {newHint.lat}
 	<br />
 	Longitute: {newHint.lon}
 	<br />
 	{#if newHint.txt == undefined}
-		Embed Link from Rumble: ""
+		Description: ""
 	{:else}
-		Embed Link from Rumble: {newHint.txt}
+		Description: {newHint.txt}
 	{/if}
 	<p><br /></p>
 	{#if visitorInformed}
@@ -130,15 +118,15 @@
 			bind:value={newHint.txt}
 			class="myInputField"
 			type="text"
-			placeholder="... paste embed link from rumble.com ..."
+			placeholder="... please describe it ..."
 		/>
 		{#if newHint.txt != undefined}
 			<p><br /></p>
-			<button class="inside" on:click={() => addHint()}>Add</button>
+			<button class="inside" on:click={() => addExchange()}>Add</button>
 		{/if}
 	{:else}
 		<FeedbackToVisitor
-			smartContractAddress={hints}
+			smartContractAddress={exchanges}
 			on:clickedOK={() => {
 				visitorInformed = true;
 			}}

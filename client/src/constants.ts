@@ -7,6 +7,7 @@
 export const freedomCash = '0xe728399d74d63E3c8C584625feE369630969bB70'; // testnet
 export const freedomBets = '0xafA72B56cACd9D04158D9832B1f71942E081a586'; // testnet
 export const hints = '0x78f372bcDdc5602D1c68949d50a1B09B1D9350Bf'; // testnet
+export const exchanges = '0x1C09fb8d5F51Ed22680F69b5437507aaca8C57C2'; // testnet
 // export const earthCoin = '0xC2aF1DA8A1007Bf414e820d5Ea77Bba0cc9086bE'; // testnet
 export const targetChainId = '0x37B4'; // testnet
 export const targetChainName = 'BuildBear';
@@ -17,6 +18,73 @@ export const projectIDFreedomExchange = 2
 export const projectIDFreedomEnterprise = 3
 export const votingPeriodMinLength = BigInt(180)
 
+export const exchangesABI = [
+	{
+		"inputs": [],
+		"name": "SupplyCorrectID",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "location",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			}
+		],
+		"name": "add",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "counter",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "freedomCaches",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "location",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
 
 // export const freedomChats = '0x97f9723BCb41C60bB4f6e01bf59B6Ce8B2364466';
 export const hintsABI = [

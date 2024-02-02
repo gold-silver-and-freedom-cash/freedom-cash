@@ -1,14 +1,7 @@
 <script>
-	import { ethers } from 'ethers';
-	import { earthCoinABI, freedomCash, freedomCashABI } from '../../constants';
-	import {
-		getPOIsFromAssets,
-		getTextWithoutLink,
-		replaceContentToShowClickableLinks
-	} from '$lib/helpers';
-	import Map from './MapOfExchanges.svelte';
 	import MapOfGeoCaches from './MapOfGeoCaches.svelte';
 	export let poi;
+	export let contract;
 
 	let donationAmount;
 	let visitorInformed = true;
@@ -24,7 +17,7 @@
 <p><br /></p>
 {#if showMap}
 	<div class="specificMap">
-		<MapOfGeoCaches height={200} pois={[poi]}></MapOfGeoCaches>
+		<MapOfGeoCaches height={200} pois={[poi]} {contract}></MapOfGeoCaches>
 	</div>
 {/if}
 

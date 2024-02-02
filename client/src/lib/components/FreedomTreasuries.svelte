@@ -10,6 +10,7 @@
 	let visitorHasBrowserWallet = false;
 	let publicWalletAddressOfVisitor = '';
 	let provider;
+	let contract
 	let pois = [];
 	let dataLoaded = false;
 	async function getFreedomCaches(contract) {
@@ -34,7 +35,7 @@
 			provider = connectionData.provider;
 			publicWalletAddressOfVisitor = connectionData.publicWalletAddressOfVisitor;
 			const signer = await provider.getSigner();
-			const contract = new ethers.Contract(hints, hintsABI, signer);
+			contract = new ethers.Contract(hints, hintsABI, signer);
 			await getFreedomCaches(contract);
 			dataLoaded = true;
 			visitorIsConnectedViaBrowserWallet = true;
@@ -49,13 +50,13 @@
 		After that you can share a link to a photo or video of that place.
 		<p><br /></p>
 		{#if dataLoaded}
-			<MapOfGeoCaches {pois}></MapOfGeoCaches>
+			<MapOfGeoCaches {pois} {contract}></MapOfGeoCaches>
 		{/if}
 
 		<p><br /><br /></p>
 		<div class="assets">
 			{#each pois as poi, index}
-				<GeoCache {poi}></GeoCache>
+				<GeoCache {poi} {contract}></GeoCache>
 			{/each}
 		</div>
 
