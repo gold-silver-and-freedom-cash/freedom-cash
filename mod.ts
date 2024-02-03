@@ -1,4 +1,5 @@
 export * from "./deno/bollinger.ts"
+export * from "./deno/freedom-bets.ts"
 export * from "./deno/monique-demo.ts"
 export * from "./deno/monique-baumann.ts"
 export * from "./deno/donation-helpers/monique-donor.ts"

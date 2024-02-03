@@ -3,14 +3,14 @@
 
 	import { page } from '$app/stores';
 	const linksLeft = [
-		['/freedomEnterprise', 'Freedom Enterprise'],
-		['/freedomCashing', 'FreedomCashing'],
+		['/freedomWallets', 'Wallets'],
+		['/freedomTreasuries', 'Treasuries'],
+		['/freedomExchanges', 'Exchanges'],
 	];
 	const linksRight = [
-		['/freedomGoods', 'Freedom Goods'],
-		['/philosophy', 'Freedom Philosophy'],
-		// ['/geochaches', 'Geocaches'],
-		// ['/aboutUs', 'aboutUs'],
+		['/freedomEnterprise', 'Enterprise'],
+		['/freedomInvestments', 'Investment'],
+		['/philosophy', 'Philosophy'],
 	];
 </script>
 

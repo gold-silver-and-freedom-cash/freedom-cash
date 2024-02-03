@@ -2,7 +2,7 @@
 	import { ethers } from 'ethers';
 	import { onMount } from 'svelte';
 	import FeedbackToVisitor from './FeedbackToVisitor.svelte';
-	import { baseURLScan, smartContractAddress } from '../../constants.ts';
+	import { baseURLScan, freedomCash } from '../../constants.ts';
 	export let contract;
 	export let provider;
 	export let publicWalletAddressOfVisitor;
@@ -15,28 +15,40 @@
 	});
 	async function buyFreedomCash() {
 		const amountToBeBoughtInWei = ethers.parseEther(amountToBeBought.toString());
-		const buyPrice = Number(await contract.getBuyPrice(amountToBeBoughtInWei));
-		const cost = amountToBeBought * buyPrice;
+		const buyPrice = await contract.getBuyPrice(amountToBeBoughtInWei);
+		const cost = BigInt(amountToBeBought) * buyPrice;
 		const ethInWallet = BigInt(await provider.getBalance(publicWalletAddressOfVisitor));
-		if (ethInWallet < cost) {
-			alert('you might enter a smaller amount');
-		} else {
-			try {
-				let result = await contract.buyFreedomCash(amountToBeBoughtInWei, buyPrice, {
+		try {
+			const estimatedGas = await contract.buyFreedomCash.estimateGas(
+				amountToBeBoughtInWei,
+				buyPrice,
+				{
 					value: BigInt(cost)
-				});  
-				visitorInformed = false;
-				console.log(result);
-			} catch (error) {
-				alert(error.message);
+				}
+			);
+			const estimatedGasCost = estimatedGas * (await provider.getFeeData()).gasPrice;
+			if (ethInWallet < cost + BigInt(estimatedGasCost)) {
+				alert('you might enter a smaller amount');
+			} else {
+				try {
+					let result = await contract.buyFreedomCash(amountToBeBoughtInWei, buyPrice, {
+						value: BigInt(cost)
+					});
+					visitorInformed = false;
+					console.log(result);
+				} catch (error) {
+					alert('you might enter a smaller amount');
+				}
 			}
+		} catch (error) {
+			alert(error);
 		}
 	}
 </script>
 
 {#if visitorInformed}
 	{#if etherAmountAvailable > 0}
-		How much Freedom Cash do you want to buy?
+		How much would you like to buy?
 		<p><br /></p>
 		<input
 			bind:value={amountToBeBought}
@@ -53,7 +65,7 @@
 		{/if}
 	{:else}
 		In order to invest into
-		<a href="{baseURLScan}token/{smartContractAddress}#code#L891" target="_blank">Freedom Cash</a>
+		<a href="{baseURLScan}token/{freedomCash}#code" target="_blank">Freedom Cash</a>
 		, you need to have some Ether on the Polygon zkEVM Blockchain.
 		<p><br /></p>
 		You can transfer some Ether from the Ethereum Mainnet to the Polygon zkEVM Blockchain via
@@ -63,7 +75,7 @@
 		<p><br /></p>
 	{/if}
 {:else}
-	<FeedbackToVisitor
+	<FeedbackToVisitor smartContractAddress={freedomCash}
 		on:clickedOK={() => {
 			visitorInformed = true;
 		}}

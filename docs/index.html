@@ -5,77 +5,54 @@
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/png" sizes="32x32" href="./libertas-favicon/favicon-32x32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="./libertas-favicon/favicon-16x16.png" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+		integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+		crossorigin=""/>
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+		integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+		crossorigin=""></script>
+   
 		<!-- <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-16x16.png" /> -->
 		
-		<link href="./app/immutable/assets/0.ecc6f2dc.css" rel="stylesheet">
-		<link href="./app/immutable/assets/2.749e6509.css" rel="stylesheet">
-		<link rel="modulepreload" href="./app/immutable/entry/start.270b2d01.js">
-		<link rel="modulepreload" href="./app/immutable/chunks/scheduler.646e10fa.js">
-		<link rel="modulepreload" href="./app/immutable/chunks/singletons.1c844154.js">
-		<link rel="modulepreload" href="./app/immutable/entry/app.cf7eb616.js">
-		<link rel="modulepreload" href="./app/immutable/chunks/index.a3a4acac.js">
-		<link rel="modulepreload" href="./app/immutable/nodes/0.11f795d7.js">
-		<link rel="modulepreload" href="./app/immutable/chunks/stores.9b96d58d.js">
-		<link rel="modulepreload" href="./app/immutable/nodes/2.11e65131.js">
-		<link rel="modulepreload" href="./app/immutable/chunks/EducateYourself.da6526a3.js">
-		<link rel="modulepreload" href="./app/immutable/chunks/Seo.a80433b0.js"><title>Home - Freedom Cash</title><!-- HEAD_svelte-1v7ufa4_START --><meta name="description" content="Freedom Cash is the currency for the Freedom Enterprise."><meta property="og:type" content="website"><meta property="og:title" content="Home - Freedom Cash"><meta property="og:site_name" content="Freedom Cash"><meta property="og:description" content="Freedom Cash is the currency for the Freedom Enterprise."><meta property="og:image" name="og:image" content="/direct-democracy.png"><meta name="og:url" content="https://sveltekit-prerender/"><meta name="twitter:image" content="/direct-democracy.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Home - Freedom Cash"><meta name="twitter:description" content="Freedom Cash is the currency for the Freedom Enterprise."><!-- HEAD_svelte-1v7ufa4_END -->
+		<link href="./app/immutable/assets/0.2d89c535.css" rel="stylesheet">
+		<link href="./app/immutable/assets/2.933e3e0d.css" rel="stylesheet">
+		<link href="./app/immutable/assets/AssetsExplorer.17070a1a.css" rel="stylesheet">
+		<link href="./app/immutable/assets/InvestmentInfo.7bd0b3c6.css" rel="stylesheet">
+		<link rel="modulepreload" href="./app/immutable/entry/start.f5f6c3c5.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/scheduler.e76b12a0.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/singletons.1958c3fb.js">
+		<link rel="modulepreload" href="./app/immutable/entry/app.73ae1ab4.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/index.8ff76f30.js">
+		<link rel="modulepreload" href="./app/immutable/nodes/0.696649a8.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/each.e59479a4.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/stores.8ee2dc11.js">
+		<link rel="modulepreload" href="./app/immutable/nodes/2.e5bbe804.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/constants.1154adc2.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/EducateYourself.e4e253ce.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/AssetsExplorer.8a42337e.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/helpers.1109ecba.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/Map.6ddebe90.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/InvestmentInfo.966e970b.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/Seo.87ab98c8.js"><title>Home - Freedom Cash</title><!-- HEAD_svelte-uoy2y9_START --><meta name="description" content="Freedom Cash is the currency for the Freedom Enterprise."><meta property="og:type" content="website"><meta property="og:title" content="Home - Freedom Cash"><meta property="og:site_name" content="Freedom Cash"><meta property="og:description" content="Freedom Cash is the currency for the Freedom Enterprise."><meta property="og:image" name="og:image" content="https://github.com/monique-baumann/freedom-cash/assets/145258627/997b6ea7-3c3d-4b07-ba2a-be402e0c4317"><meta name="og:url" content="https://sveltekit-prerender/"><meta name="twitter:site" content="@monique_is_free"><meta name="twitter:image" content="https://github.com/monique-baumann/freedom-cash/assets/145258627/997b6ea7-3c3d-4b07-ba2a-be402e0c4317"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Home - Freedom Cash"><meta name="twitter:description" content="Freedom Cash is the currency for the Freedom Enterprise."><!-- HEAD_svelte-uoy2y9_END -->
 	</head>
 	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">  <header class="svelte-s0hk1x"><div class="container"><nav class="svelte-s0hk1x"><ul class="svelte-s0hk1x"><li class="svelte-bs8x38"><a href="./freedomEnterprise" class="nav-item svelte-bs8x38">Freedom Enterprise </a> </li><li class="svelte-bs8x38"><a href="./freedomCashing" class="nav-item svelte-bs8x38">FreedomCashing </a> </li> <li class="svelte-s0hk1x" data-svelte-h="svelte-d6vcvk"><a href="./" class="logo svelte-s0hk1x"><img alt="Freedom Cash Logo" src="./libertas-favicon/icon.ico" class="svelte-s0hk1x"></a></li> <li class="svelte-bs8x38"><a href="./freedomGoods" class="nav-item svelte-bs8x38">Freedom Goods </a> </li><li class="svelte-bs8x38"><a href="./philosophy" class="nav-item svelte-bs8x38">Freedom Philosophy </a> </li></ul></nav></div> </header> <main class="container svelte-40n5a"> <main><h2 class="text-center" data-svelte-h="svelte-1g3s3uj">Freedom Cash</h2> <section class="text-center">Freedom Cash makes crypto cypherpunk again, while being simple enough for everyone who cares.
-	<p data-svelte-h="svelte-pntvnr"><br></p> <p data-svelte-h="svelte-5q9igk"><br><br></p> <div class="center" data-svelte-h="svelte-4eez5y"><img class="moniqueImage svelte-ofeuli" src="./monique-baumann.jpeg" alt=""></div> <p data-svelte-h="svelte-pntvnr"><br></p>
+		<div style="display: contents">  <header class="svelte-s0hk1x"><div class="container"><nav class="svelte-s0hk1x"><ul class="svelte-s0hk1x"><li class="svelte-bs8x38"><a href="./freedomWallets" class="nav-item svelte-bs8x38">Wallets </a> </li><li class="svelte-bs8x38"><a href="./freedomTreasuries" class="nav-item svelte-bs8x38">Treasuries </a> </li><li class="svelte-bs8x38"><a href="./freedomExchanges" class="nav-item svelte-bs8x38">Exchanges </a> </li> <li class="svelte-s0hk1x" data-svelte-h="svelte-d6vcvk"><a href="./" class="logo svelte-s0hk1x"><img alt="Freedom Cash Logo" src="./libertas-favicon/icon.ico" class="svelte-s0hk1x"></a></li> <li class="svelte-bs8x38"><a href="./freedomEnterprise" class="nav-item svelte-bs8x38">Enterprise </a> </li><li class="svelte-bs8x38"><a href="./freedomInvestments" class="nav-item svelte-bs8x38">Investment </a> </li><li class="svelte-bs8x38"><a href="./philosophy" class="nav-item svelte-bs8x38">Philosophy </a> </li></ul></nav></div> </header> <main class="container svelte-40n5a"> <main><h2 class="text-center" data-svelte-h="svelte-1g3s3uj">Freedom Cash</h2> <section class="text-center"><div class="content svelte-f5gmef">Freedom Cash makes crypto cypherpunk again. <p data-svelte-h="svelte-pntvnr"><br></p>
+		At the same time it is simple enough for Monique, Steffen and you.
 
-	I buy and sell
-	<a href="https://zkevm.polygonscan.com/token/0xa1e7bB978a28A30B34995c57d5ba0B778E90033B#code#L891" target="_blank" data-svelte-h="svelte-1f2yvrv">Freedom Cash</a>.
-	<a href="https://github.com/monique-baumann" target="_blank" data-svelte-h="svelte-1yjiq05"><i>Monique Baumann</i></a> <p data-svelte-h="svelte-pntvnr"><br></p> <h4 class="text-center" data-svelte-h="svelte-10nzcsz">Total Supply</h4>
-	369.369.369
-	<a href="https://zkevm.polygonscan.com/token/0xa1e7bB978a28A30B34995c57d5ba0B778E90033B#code#L891" target="_blank" data-svelte-h="svelte-1e75syq">Freedom Cash (FREEDOMCASH)</a> <h4 class="text-center" data-svelte-h="svelte-3o3qda">Utility</h4>
-	Funding playgrounds for freedom.
-	<p data-svelte-h="svelte-pntvnr"><br></p>
-	Freedom Cash is the currency for the
-	<a href="https://github.com/monique-baumann/FreedomEnterprise/blob/main/README.md" target="_blank" data-svelte-h="svelte-1xv5qza">Freedom Enterprise</a>.
-	<p data-svelte-h="svelte-pntvnr"><br></p> 
-	Freedom Cash provides a buy and sell function within the smart contract itself, defining a reasonable
-	pricing algorithm and ensuring that people do not waste gas-, liquidity provider- and exchange fees.
+		<p data-svelte-h="svelte-5q9igk"><br><br></p> <div class="center" data-svelte-h="svelte-16wckku"><img class="moniqueImage" src="./monique-baumann.jpeg" alt=""></div> <p data-svelte-h="svelte-pntvnr"><br></p>
 
-	<h4 class="text-center" data-svelte-h="svelte-1ecgay2">Liquidity</h4>
-	The total supply of Freedom Cash was minted not to the developer or deployer but to the
-	<a href="https://zkevm.polygonscan.com/token/0xa1e7bB978a28A30B34995c57d5ba0B778E90033B#code#L891" target="_blank" data-svelte-h="svelte-13569o3">smart contract</a>
-	itself.
-
-	<p data-svelte-h="svelte-pntvnr"><br></p>
-Please study the
-<a href="https://zkevm.polygonscan.com/token/0xa1e7bB978a28A30B34995c57d5ba0B778E90033B#code#L891" target="_blank" data-svelte-h="svelte-145py1a">smart contract</a>
-so that you can explain it to your friends if you like it.  <h4 data-svelte-h="svelte-f4bw6e">Questions &amp; Answers</h4> <p data-svelte-h="svelte-pntvnr"><br></p> <h6 data-svelte-h="svelte-4rgktv">Why don&#39;t you create liquidity as an ETH/FreedomCash Tradingpair on Uniswap? <br></h6> <p data-svelte-h="svelte-pntvnr"><br></p>
-	With our approach we reduce gas fees and avoid pool fees for
-	<a href="https://zkevm.polygonscan.com/token/0xa1e7bB978a28A30B34995c57d5ba0B778E90033B#code#L891" target="_blank" data-svelte-h="svelte-1f2yvrv">Freedom Cash</a>
-	investors.
-	<p data-svelte-h="svelte-pntvnr"><br></p>
-	Additionally our pricing approach protects against ponzi like vulnerabilities &amp; drops of the sell price.
-	<p data-svelte-h="svelte-5q9igk"><br><br></p> <h6 data-svelte-h="svelte-17jd9g7">What happens if anyone creates a liquidity pool for Freedom Cash on Uniswap?</h6> <br> People are free to create liquidity pools e.g. with ETH/FreedomCash liquidity on Uniswap.
-	It&#39;s just not necessary and not useful.
-	<p data-svelte-h="svelte-5q9igk"><br><br></p> <h6 data-svelte-h="svelte-m7u0f0">How is it possible that the sell price never drops? <br></h6> <p data-svelte-h="svelte-pntvnr"><br></p>
-	The sell price of Freedom Cash expressed in Ether can stay as it is or go up. It can never drop.
-	<p data-svelte-h="svelte-pntvnr"><br></p>
-Please study the
-<a href="https://zkevm.polygonscan.com/token/0xa1e7bB978a28A30B34995c57d5ba0B778E90033B#code#L891" target="_blank" data-svelte-h="svelte-145py1a">smart contract</a>
-so that you can explain it to your friends if you like it. <p data-svelte-h="svelte-pntvnr"><br></p> <a href="https://zkevm.polygonscan.com/token/0xa1e7bB978a28A30B34995c57d5ba0B778E90033B#code#L891" target="_blank" data-svelte-h="svelte-ci805"><div class="center"><img class="tokenomicsImage" src="./price-functions.png" alt=""></div></a> <p data-svelte-h="svelte-5q9igk"><br><br></p> <h6 data-svelte-h="svelte-jsddlh">This seems too good to be true. What&#39;s the catch? <br></h6> <p data-svelte-h="svelte-pntvnr"><br></p>
-	It might take a while until people realize that the sell price is at all times the minimum sell price
-	which will never go below the current value expressed in Ether - even in a &quot;bankrun&quot; like situation.
-	<p data-svelte-h="svelte-pntvnr"><br></p>
-Please study the
-<a href="https://zkevm.polygonscan.com/token/0xa1e7bB978a28A30B34995c57d5ba0B778E90033B#code#L891" target="_blank" data-svelte-h="svelte-145py1a">smart contract</a>
-so that you can explain it to your friends if you like it. <p data-svelte-h="svelte-pntvnr"><br></p>
-	If you find any serious catch, please raise an issue
-	<a href="https://github.com/monique-baumann/freedom-cash/issues/new" target="_blank" data-svelte-h="svelte-1cn4rod">here</a>.
-	<p data-svelte-h="svelte-pntvnr"><br></p> Please install a browserwallet which you trust like
-		<a href="https://metamask.io" target="_blank" data-svelte-h="svelte-ckwul2">metamask.io</a>
-		or use the integrated browserwallet in the
-		<a href="https://brave.com" target="_blank" data-svelte-h="svelte-12y5jy6">brave.com</a> browser and come again. </section> </main></main> <footer class="svelte-ypycgj"><div class="container svelte-ypycgj"><span data-svelte-h="svelte-dxda66"><a class="underline" href="https://github.com/monique-baumann/freedom-cash" target="_blank" rel="noopener">GitHub</a></span> <span data-svelte-h="svelte-7hh8jk">•</span> <span>© 2024 Freedom Cash</span> <span data-svelte-h="svelte-7hh8jk">•</span> <span data-svelte-h="svelte-h6ykkk"><a class="underline" href="https://freedomcash.org" target="_blank" rel="noopener">FreedomCash.org</a></span></div> </footer> 
+		I buy and sell
+		<a href="https://zkevm.polygonscan.com/token/0xa1e7bB978a28A30B34995c57d5ba0B778E90033B#code" target="_blank" data-svelte-h="svelte-1rso6ew">Freedom Cash</a>,
+		silver and gold.
+		<a href="https://github.com/monique-baumann" target="_blank" data-svelte-h="svelte-1yjiq05"><i>Monique Baumann</i></a> <p data-svelte-h="svelte-102w9s7"><br><br><br></p> <button class="button" data-svelte-h="svelte-1peq0p4">Show Details About Freedom Cash</button>  <p data-svelte-h="svelte-5q9igk"><br><br></p> <button class="button" data-svelte-h="svelte-2a1dkc">Buy and Sell Freedom Cash</button></div>  <p data-svelte-h="svelte-5q9igk"><br><br></p> <div class="content svelte-f5gmef"><button class="button" data-svelte-h="svelte-1m680gf">Show Freedom Bets</button></div>  <p data-svelte-h="svelte-5q9igk"><br><br></p> <div class="content svelte-f5gmef">Please install a browserwallet which you trust like
+			<a href="https://metamask.io" target="_blank" data-svelte-h="svelte-ckwul2">metamask.io</a>
+			or use the integrated browserwallet in the
+			<a href="https://brave.com" target="_blank" data-svelte-h="svelte-12y5jy6">brave.com</a> browser and come again. <button class="button" data-svelte-h="svelte-1fj8x9e">Show Freedom Projects</button></div>  </section> </main></main> <footer class="svelte-ypycgj"><div class="container svelte-ypycgj"><span data-svelte-h="svelte-dxda66"><a class="underline" href="https://github.com/monique-baumann/freedom-cash" target="_blank" rel="noopener">GitHub</a></span> <span data-svelte-h="svelte-7hh8jk">•</span> <span>© 2024 Freedom Cash</span> <span data-svelte-h="svelte-7hh8jk">•</span> <span data-svelte-h="svelte-h6ykkk"><a class="underline" href="https://freedomcash.org" target="_blank" rel="noopener">FreedomCash.org</a></span></div> </footer> 
 			
 			<script>
 				{
-					__sveltekit_afm11u = {
+					__sveltekit_1ldcx1w = {
 						base: new URL(".", location).pathname.slice(0, -1),
 						env: {}
 					};
@@ -85,8 +62,8 @@ so that you can explain it to your friends if you like it. <p data-svelte-h="sve
 					const data = [null,null];
 
 					Promise.all([
-						import("./app/immutable/entry/start.270b2d01.js"),
-						import("./app/immutable/entry/app.cf7eb616.js")
+						import("./app/immutable/entry/start.f5f6c3c5.js"),
+						import("./app/immutable/entry/app.73ae1ab4.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 2],
